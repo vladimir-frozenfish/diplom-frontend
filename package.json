@@ -1,8 +1,8 @@
 {
-  "name": "netology_diplom",
+  "name": "diplom-frontend",
   "private": true,
   "version": "0.1.0",
-  "homepage": "https://vladimir-frozenfish-1234.github.io/netology_diplom/",
+  "homepage": "https://vladimir-frozenfish.github.io/diplom-frontend",
   "type": "module",
   "scripts": {
     "dev": "vite",
