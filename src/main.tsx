@@ -8,11 +8,11 @@ import Admin from './components/admin/Admin.tsx'
 import ErrorPage404 from './components/errorPages/ErrorPage404.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <BrowserRouter>
+  <BrowserRouter basename={basePath}>
     <StrictMode>
       <Routes>
-        <Route path={basePath} element={<App />}/>
-        <Route path={`${basePath}/admin`} element={<Admin />}/>
+        <Route path='/' element={<App />}/>
+        <Route path='/admin' element={<Admin />}/>
         <Route path='*' element={<ErrorPage404 />}/>
       </Routes>
     </StrictMode>
