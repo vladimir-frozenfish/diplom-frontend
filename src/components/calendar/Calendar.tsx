@@ -30,8 +30,13 @@ export default function Calendar({selectedDate, onSelectDate}: CalendarProps) {
   }
 
   function Day({date}: DayProps) {
+    let stylesDay = styles.calendar_day
+    if (areDatesEqual(date, selectedDate)) stylesDay += ' ' + styles.calendar_day_active
+    if ([0, 6].includes(date.getDay())) stylesDay += ' ' + styles.calendar_day_weekend
+
+
     return (
-      <div onClick={() => onSelectDate(date)} className={areDatesEqual(date, selectedDate) ? styles.calendar_day + ' ' + styles.calendar_day_active : styles.calendar_day}>
+      <div onClick={() => onSelectDate(date)} className={stylesDay}>
         {areDatesEqual(date, currentDate) 
           ?
             <>

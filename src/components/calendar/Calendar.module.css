@@ -23,4 +23,9 @@
   background-color: white;
   height: 52px;
   flex: 2;
+  font-weight: bold;
+}
+
+.calendar_day_weekend {
+  color: red;
 }
