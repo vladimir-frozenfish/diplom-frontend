@@ -8,7 +8,7 @@
 }
 
 .calendar_day {
-  background-color: rgb(249, 240, 229);
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 2px;
   height: 100%;
   display: flex;

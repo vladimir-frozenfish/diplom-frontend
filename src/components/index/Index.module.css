@@ -1,0 +1,6 @@
+.index_films {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+}

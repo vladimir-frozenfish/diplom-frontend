@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { getResponse } from '../../utils/response'
 import type { AllDataType } from '../../types/types.ts'
 import Calendar from '../calendar/Calendar.tsx'
-// import styles from './Index.module.css'
+import Film from '../film/Film.tsx'
+import styles from './Index.module.css'
 
 export default function Index() {
   const [allData, setAllData] = useState<AllDataType | null>(null)
@@ -30,6 +31,18 @@ export default function Index() {
         onSelectDate={(date) => setSelectedDate(date)}
       />
       
+      <div className={styles.index_films}>
+        {allData?.result.films.map(
+          (film, index) => 
+          <Film 
+            key={index} 
+            film={film} 
+            seances={allData.result.seances.filter(value => value.seance_filmid === film.id)}
+            halls={allData.result.halls}
+          />
+        )}
+      </div>
+
       {isErrorResponse ? <div>Ошибка получения данных.</div> :
         isLoading ? <div>Загрузка...</div> : <div>{allData ? Object.values(allData.result.films).length : 'Не найдено'}</div>
       }
