@@ -12,8 +12,8 @@ interface SeanceWithHallType extends SeanceType {
 }
 
 export default function Film({film, seances, halls}: FilmProps) {
-  let groupSeancesOfHalls: Record<number, SeanceWithHallType[]> = {}
-  for (let seance of seances) {
+  const groupSeancesOfHalls: Record<number, SeanceWithHallType[]> = {}
+  for (const seance of seances) {
     if (!groupSeancesOfHalls[seance.seance_hallid]) groupSeancesOfHalls[seance.seance_hallid] = []
     groupSeancesOfHalls[seance.seance_hallid].push({...seance, seance_hallname: halls.find(hall => hall.id === seance.seance_hallid)?.hall_name})
   }
