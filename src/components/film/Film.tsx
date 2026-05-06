@@ -7,17 +7,15 @@ interface FilmProps {
   halls: HallType[]
   setIsTicketSelection: (is: boolean) => void
   setSelectedSeance: (seance: SeanceWithHallType) => void
+  setSelectedFilm: (film: FilmType) => void
+  setSelectedHall: (hall: HallType | null) => void
 }
-
-// interface SeanceWithHallType extends SeanceType {
-//   seance_hallname: string | undefined
-// }
 
 interface HallProps {
   seances: SeanceWithHallType[]
 }
 
-export default function Film({film, seances, halls, setIsTicketSelection, setSelectedSeance}: FilmProps) {
+export default function Film({film, seances, halls, setIsTicketSelection, setSelectedSeance, setSelectedFilm, setSelectedHall}: FilmProps) {
   const groupSeancesOfHalls: Record<number, SeanceWithHallType[]> = {}
   for (const seance of seances) {
     if (!groupSeancesOfHalls[seance.seance_hallid]) groupSeancesOfHalls[seance.seance_hallid] = []
@@ -27,6 +25,10 @@ export default function Film({film, seances, halls, setIsTicketSelection, setSel
   function onClickSeance(seance: SeanceWithHallType) {
     setIsTicketSelection(true)
     setSelectedSeance(seance)
+    setSelectedFilm(film)
+    
+    const hallFind = halls.find(hall => hall.id === seance.seance_hallid)
+    setSelectedHall(hallFind ? hallFind : null)
   }
 
   function Hall({seances}: HallProps) {
