@@ -37,3 +37,7 @@ export interface AllDataType {
   succes: boolean
   result: ResultAllDataType
 }
+
+export interface SeanceWithHallType extends SeanceType {
+  seance_hallname: string | undefined
+}
