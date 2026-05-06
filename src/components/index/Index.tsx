@@ -24,6 +24,14 @@ export default function Index() {
     })()
   }, [])
 
+  if (isErrorResponse) {
+    return (<div>Ошибка получения данных.</div>)
+  }
+
+  if (isLoading) {
+    return (<div>Загрузка...</div>)
+  }
+
   return (
     <>
       <Calendar 
@@ -42,10 +50,6 @@ export default function Index() {
           />
         )}
       </div>
-
-      {isErrorResponse ? <div>Ошибка получения данных.</div> :
-        isLoading ? <div>Загрузка...</div> : <div>{allData ? Object.values(allData.result.films).length : 'Не найдено'}</div>
-      }
     </>
   )
 }

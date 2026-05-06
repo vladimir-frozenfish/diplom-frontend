@@ -1,6 +1,9 @@
 .film {
   background-color: rgba(255, 255, 255, 0.9);
   padding: 15px;
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.24);
+  border-radius: 2px;
 }
 
 .film_poster_and_description {
@@ -25,4 +28,38 @@
 
 .film_duration {
   font-weight: 300;
+}
+
+.film_hallname_seances {
+  display: flex;
+  flex-direction: column;
+  row-gap: 25px;
+}
+
+.film_hallname {
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.film_seances {
+  display: flex;
+  column-gap: 4px;
+}
+
+.film_seance {
+  background-color: white;
+  padding: 8px;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.24);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.film_seance:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+.film_seance:active {
+  background-color: white;
 }
