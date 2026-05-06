@@ -23,8 +23,25 @@ export default function Hall({selectedDate, selectedSeance, selectedFilm, select
         <div className={styles.hall_schema_bg}>
           <div className={styles.hall_schema}>
             <img className={styles.hall_schema__screen} src={basePath + '/hall_screen.png'} />
+
+            <div className={styles.hall_selection_seats}>Выбор мест</div>        
+
+            <div className={styles.hall_legend}>
+              <div className={styles.hall_seat_legend}>
+                <div className={styles.hall_seat}></div><div className={styles.hall_seat_title}>Свободно ({selectedHall?.hall_price_standart} руб)</div>
+              </div>
+              <div className={styles.hall_seat_legend}>
+                <div className={styles.hall_seat + ' ' + styles.hall_seat_occupied}></div><div className={styles.hall_seat_title}>Занято</div>
+              </div>              
+              <div className={styles.hall_seat_legend}>
+                <div className={styles.hall_seat + ' ' + styles.hall_seat_vip}></div><div className={styles.hall_seat_title}>Свободно VIP ({selectedHall?.hall_price_vip} руб)</div>
+              </div>              
+              <div className={styles.hall_seat_legend}>
+                <div className={styles.hall_seat + ' ' + styles.hall_seat_selected}></div><div className={styles.hall_seat_title}>Выбрано</div>
+              </div>              
+            </div>        
           </div>
-        </div>        
+        </div>
 
         <div className={styles.hall_booking}>
           <div className={styles.hall_booking__button}>ЗАБРОНИРОВАТЬ</div>

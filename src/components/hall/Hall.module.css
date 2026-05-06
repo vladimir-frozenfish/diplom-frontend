@@ -23,15 +23,20 @@
   padding: 15px 0;
   background: rgba(23, 29, 36, 1);
   color: white;
+  display: flex;
+  justify-content: center;
 }
 
 .hall_schema {
-  margin: 0 auto;
-  width: 268px;
+  /* margin: 0 auto; */
+  /* width: 268px; */
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
 }
 
 .hall_schema__screen {
-  width: inherit;
+  width: 268px;
 }
 
 .hall_booking {
@@ -57,4 +62,51 @@
 
 .hall_booking__button:active {
   transform: scale(100%);
+}
+
+.hall_legend {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  row-gap: 10px;
+  column-gap: 10px;
+}
+
+.hall_seat_legend {
+  display: flex;
+  column-gap: 4px;
+  align-items: center;
+}
+
+.hall_seat {
+  height: 20px;
+  width: 20px;
+  background-color: aliceblue;
+  border: 1px solid rgba(82, 82, 82, 1);
+  border-radius: 4px;
+}
+
+.hall_seat_vip {
+  background: rgba(249, 149, 58, 1);
+}
+
+.hall_seat_occupied {
+  background-color: black;
+}
+
+.hall_seat_selected {
+  background: rgba(37, 196, 206, 1);
+  box-shadow: 0px 0px 4px 0px rgba(22, 166, 175, 1);
+}
+
+.hall_seat_title {
+  font-size: 14px;
+  font-weight: 300;
+  user-select: none;
+}
+
+.hall_selection_seats {
+  margin-top: 20px;
+  
 }
