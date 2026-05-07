@@ -3,7 +3,6 @@ import type { FilmType, HallType, SeanceWithHallType, DateHallConfig, SeatType }
 import { getResponse } from '../../utils/response.ts'
 import { basePath } from '../../enum/enum.ts'
 import styles from './Hall.module.css'
-import { data } from 'react-router'
 
 interface HallProps {
   selectedDate: Date
@@ -39,7 +38,7 @@ export default function Hall({selectedDate, selectedSeance, selectedFilm, select
         setIsErrorResponse(true)
       }
     })()
-  }, [])
+  }, [selectedDate, selectedSeance])
   
   if (isErrorResponse) {
     return (<div>Ошибка получения данных.</div>)
