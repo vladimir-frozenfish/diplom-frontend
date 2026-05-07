@@ -7,7 +7,7 @@ export interface FilmType {
   film_poster: string
 }
 
-export type SeatType = 'standart' | 'vip'
+export type SeatType = 'standart' | 'vip' | 'taken' | 'disabled' 
 
 export interface HallType {
   id: number
@@ -36,4 +36,13 @@ export interface ResultAllDataType {
 export interface AllDataType {
   succes: boolean
   result: ResultAllDataType
+}
+
+export interface DateHallConfig {
+  succes: boolean
+  result: SeatType[][]
+}
+
+export interface SeanceWithHallType extends SeanceType {
+  seance_hallname: string | undefined
 }

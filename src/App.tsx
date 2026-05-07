@@ -7,7 +7,7 @@ export default function App() {
     <div className={styles.app}>
       <div className={styles.app_container}>
         <div className={styles.app_header}>
-          <NavLink to='/'><div className={styles.app_logo}>ИДЁМ<span>В</span>КИНО</div></NavLink>
+          <NavLink to='/' reloadDocument><div className={styles.app_logo}>ИДЁМ<span>В</span>КИНО</div></NavLink>
           <NavLink to='/admin'><div className={styles.app_signin}>ВОЙТИ</div></NavLink>
         </div>
         

@@ -1,25 +1,34 @@
-import type { FilmType, SeanceType, HallType } from '../../types/types'
+import type { FilmType, SeanceType, HallType, SeanceWithHallType } from '../../types/types'
 import styles from './Film.module.css'
 
 interface FilmProps {
   film: FilmType
   seances: SeanceType[]
   halls: HallType[]
-}
-
-interface SeanceWithHallType extends SeanceType {
-  seance_hallname: string | undefined
+  setIsTicketSelection: (is: boolean) => void
+  setSelectedSeance: (seance: SeanceWithHallType) => void
+  setSelectedFilm: (film: FilmType) => void
+  setSelectedHall: (hall: HallType | null) => void
 }
 
 interface HallProps {
   seances: SeanceWithHallType[]
 }
 
-export default function Film({film, seances, halls}: FilmProps) {
+export default function Film({film, seances, halls, setIsTicketSelection, setSelectedSeance, setSelectedFilm, setSelectedHall}: FilmProps) {
   const groupSeancesOfHalls: Record<number, SeanceWithHallType[]> = {}
   for (const seance of seances) {
     if (!groupSeancesOfHalls[seance.seance_hallid]) groupSeancesOfHalls[seance.seance_hallid] = []
     groupSeancesOfHalls[seance.seance_hallid].push({...seance, seance_hallname: halls.find(hall => hall.id === seance.seance_hallid)?.hall_name})
+  }
+
+  function onClickSeance(seance: SeanceWithHallType) {
+    setIsTicketSelection(true)
+    setSelectedSeance(seance)
+    setSelectedFilm(film)
+    
+    const hallFind = halls.find(hall => hall.id === seance.seance_hallid)
+    setSelectedHall(hallFind ? hallFind : null)
   }
 
   function Hall({seances}: HallProps) {
@@ -27,12 +36,10 @@ export default function Film({film, seances, halls}: FilmProps) {
       <div>
         <div className={styles.film_hallname}>{seances[0].seance_hallname ? seances[0].seance_hallname.charAt(0).toUpperCase() + seances[0].seance_hallname.slice(1) : '-'}</div>
         <div className={styles.film_seances}>
-          {seances.map((seance, index) => <div key={index} className={styles.film_seance}>{seance.seance_time}</div>)}
+          {seances.map((seance, index) => <div onClick={() => onClickSeance(seance)} key={index} className={styles.film_seance}>{seance.seance_time}</div>)}
         </div>
       </div>
     )
-      
-    
   }
 
   return (
