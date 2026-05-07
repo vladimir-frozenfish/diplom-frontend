@@ -90,6 +90,7 @@
   background-color: aliceblue;
   border: 1px solid rgba(82, 82, 82, 1);
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .hall_seat_vip {
