@@ -49,4 +49,4 @@ export interface SeanceWithHallType extends SeanceType {
   seance_hallname: string | undefined
 }
 
-export type TicketsType = [number, number][]
+export type TicketsType = [number, number, number][]

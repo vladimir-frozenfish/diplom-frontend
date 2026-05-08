@@ -41,7 +41,13 @@ export default function Index() {
 
   if (clientPage == 'ticketsBooking') {
     return (
-      <Booking />
+      <Booking 
+        selectedDate={selectedDate} 
+        selectedSeance={selectedSeance} 
+        selectedFilm={selectedFilm}
+        selectedHall={selectedHall}
+        tickets={tickets}
+      />
     )
   }
 
@@ -53,7 +59,6 @@ export default function Index() {
         selectedFilm={selectedFilm}
         selectedHall={selectedHall}
         setClientPage={(page: ClientPageType) => setClientPage(page)}
-        
         tickets={tickets}
         setTickets={setTickets}
       />

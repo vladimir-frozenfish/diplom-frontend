@@ -28,8 +28,6 @@
 }
 
 .hall_schema {
-  /* margin: 0 auto; */
-  /* width: 268px; */
   display: flex;
   flex-direction: column;
   width: fit-content;

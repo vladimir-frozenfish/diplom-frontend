@@ -21,7 +21,7 @@ interface SeatProps {
   seatIndex: number
 }
 
-function isTicketSelected(tickets: [number, number][], rowIndex: number, seatIndex: number) {
+function isTicketSelected(tickets: TicketsType, rowIndex: number, seatIndex: number) {
   return tickets.some(ticket => ticket[0] === rowIndex && ticket[1] === seatIndex)
 }
 
@@ -29,7 +29,6 @@ export default function Hall({selectedDate, selectedSeance, selectedFilm, select
   const [isLoading, setIsLoading] = useState(true)
   const [isErrorResponse, setIsErrorResponse] = useState(false)
   const [hallConfig, setHallConfig] = useState<DateHallConfig | null>(null)
-  // const [tickets, setTickets] = useState<[number, number][]>([])
 
   useEffect(() => {
     (async () => {
@@ -57,11 +56,14 @@ export default function Hall({selectedDate, selectedSeance, selectedFilm, select
       return
     }
 
+    let seatPrice = seat == 'standart' ? selectedHall?.hall_price_standart : selectedHall?.hall_price_vip
+    if (!seatPrice) seatPrice = 0
+
     setTickets(prevTickets => {
       if (isTicketSelected(prevTickets, rowIndex, seatIndex)) {
         return prevTickets.filter(ticket => !(ticket[0] === rowIndex && ticket[1] === seatIndex))
       } else {
-        return [...prevTickets, [rowIndex, seatIndex]]
+        return [...prevTickets, [rowIndex, seatIndex, seatPrice]]
       }
     })
   }
