@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import type { FilmType, HallType, SeanceWithHallType, DateHallConfig, SeatType } from '../../types/types.ts'
+import type { Dispatch, SetStateAction } from 'react'
+import type { FilmType, HallType, SeanceWithHallType, DateHallConfig, SeatType, ClientPageType, TicketsType } from '../../types/types.ts'
 import { getResponse } from '../../utils/response.ts'
 import { basePath } from '../../enum/enum.ts'
 import styles from './Hall.module.css'
@@ -9,6 +10,9 @@ interface HallProps {
   selectedSeance: SeanceWithHallType | null
   selectedFilm: FilmType | null
   selectedHall: HallType | null
+  setClientPage: (page: ClientPageType) => void
+  tickets: TicketsType
+  setTickets: Dispatch<SetStateAction<TicketsType>>
 }
 
 interface SeatProps {
@@ -17,15 +21,14 @@ interface SeatProps {
   seatIndex: number
 }
 
-function isTicketSelected(tickets: [number, number][], rowIndex: number, seatIndex: number) {
+function isTicketSelected(tickets: TicketsType, rowIndex: number, seatIndex: number) {
   return tickets.some(ticket => ticket[0] === rowIndex && ticket[1] === seatIndex)
 }
 
-export default function Hall({selectedDate, selectedSeance, selectedFilm, selectedHall}: HallProps) {
+export default function Hall({selectedDate, selectedSeance, selectedFilm, selectedHall, setClientPage, tickets, setTickets}: HallProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isErrorResponse, setIsErrorResponse] = useState(false)
   const [hallConfig, setHallConfig] = useState<DateHallConfig | null>(null)
-  const [tickets, setTickets] = useState<[number, number][]>([])
 
   useEffect(() => {
     (async () => {
@@ -53,13 +56,42 @@ export default function Hall({selectedDate, selectedSeance, selectedFilm, select
       return
     }
 
+    let seatPrice = seat == 'standart' ? selectedHall?.hall_price_standart : selectedHall?.hall_price_vip
+    if (!seatPrice) seatPrice = 0
+
     setTickets(prevTickets => {
       if (isTicketSelected(prevTickets, rowIndex, seatIndex)) {
         return prevTickets.filter(ticket => !(ticket[0] === rowIndex && ticket[1] === seatIndex))
       } else {
-        return [...prevTickets, [rowIndex, seatIndex]]
+        return [...prevTickets, [rowIndex, seatIndex, seatPrice]]
       }
     })
+  }
+
+  async function onClickBooking() {
+    if (tickets.length) {
+      
+      const ticketsForBody = []
+      for (const ticket of tickets) {
+        ticketsForBody.push({row: ticket[0], place: ticket[1], coast: ticket[2]})
+      }
+
+      const requestBody = {
+        seanceId: selectedSeance?.id,
+        ticketDate: selectedDate.toISOString().split('T')[0],
+        tickets: ticketsForBody
+      }
+
+      try {
+        const response = await getResponse('/ticket', 'POST', JSON.stringify(requestBody))
+        const data = await response.json()
+        console.log(data)
+      } catch(e) {
+        console.error(e)
+      }
+
+      setClientPage('ticketsBooking')
+    }
   }
 
   function Seat({seat, rowIndex, seatIndex}: SeatProps) {
@@ -115,7 +147,7 @@ export default function Hall({selectedDate, selectedSeance, selectedFilm, select
         </div>
 
         <div className={styles.hall_booking}>
-          <div className={styles.hall_booking__button}>ЗАБРОНИРОВАТЬ</div>
+          <div className={styles.hall_booking__button} onClick={onClickBooking}>ЗАБРОНИРОВАТЬ</div>
         </div>
       </div>
   )

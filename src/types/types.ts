@@ -1,3 +1,5 @@
+export type ClientPageType = 'films' | 'ticketsSelect' | 'ticketsBooking'
+
 export interface FilmType {
   id: number
   film_name: string
@@ -46,3 +48,5 @@ export interface DateHallConfig {
 export interface SeanceWithHallType extends SeanceType {
   seance_hallname: string | undefined
 }
+
+export type TicketsType = [number, number, number][]
