@@ -68,8 +68,30 @@ export default function Hall({selectedDate, selectedSeance, selectedFilm, select
     })
   }
 
-  function onClickBooking() {
-    if (tickets.length) setClientPage('ticketsBooking')
+  async function onClickBooking() {
+    if (tickets.length) {
+      
+      const ticketsForBody = []
+      for (const ticket of tickets) {
+        ticketsForBody.push({row: ticket[0], place: ticket[1], coast: ticket[2]})
+      }
+
+      const requestBody = {
+        seanceId: selectedSeance?.id,
+        ticketDate: selectedDate.toISOString().split('T')[0],
+        tickets: ticketsForBody
+      }
+
+      try {
+        const response = await getResponse('/ticket', 'POST', JSON.stringify(requestBody))
+        const data = await response.json()
+        console.log(data)
+      } catch(e) {
+        console.error(e)
+      }
+
+      setClientPage('ticketsBooking')
+    }
   }
 
   function Seat({seat, rowIndex, seatIndex}: SeatProps) {

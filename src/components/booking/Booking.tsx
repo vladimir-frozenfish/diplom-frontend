@@ -11,14 +11,6 @@ interface BookingProps {
 
 
 export default function Booking({selectedDate, selectedSeance, selectedFilm, selectedHall, tickets}: BookingProps) {
-  function Seats() {
-    return (
-      <>
-        {tickets.map((ticket, index) => <span key={index}>Ряд - {ticket[0] + 1} место - {ticket[1] + 1}; </span>)}
-      </>
-    )
-  }
-
   function ticketPrice() {
     return  tickets.reduce((total, ticket) => {return total + ticket[2]}, 0)
   }
@@ -33,7 +25,7 @@ export default function Booking({selectedDate, selectedSeance, selectedFilm, sel
         <div className={styles.booking}>
           <div className={styles.booking_info}>
             <div>На фильм: <span>{selectedFilm?.film_name}</span></div>
-            <div>Места: <Seats /></div>
+            <div>Места: {tickets.map((ticket, index) => <span key={index}>Ряд - {ticket[0] + 1} место - {ticket[1] + 1}; </span>)}</div>
             <div>В зале: <span>{selectedHall?.hall_name ? selectedHall?.hall_name.charAt(0).toUpperCase() + selectedHall?.hall_name.slice(1) : '-'}</span></div>
             <div>Дата: <span>{selectedDate.toLocaleDateString('ru-Ru')}</span></div>
             <div>Начало сеанса: <span>{selectedSeance?.seance_time}</span></div>
