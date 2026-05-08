@@ -1,11 +1,11 @@
-import type { FilmType, SeanceType, HallType, SeanceWithHallType } from '../../types/types'
+import type { FilmType, SeanceType, HallType, SeanceWithHallType, ClientPageType } from '../../types/types'
 import styles from './Film.module.css'
 
 interface FilmProps {
   film: FilmType
   seances: SeanceType[]
   halls: HallType[]
-  setIsTicketSelection: (is: boolean) => void
+  setClientPage: (page: ClientPageType) => void
   setSelectedSeance: (seance: SeanceWithHallType) => void
   setSelectedFilm: (film: FilmType) => void
   setSelectedHall: (hall: HallType | null) => void
@@ -15,7 +15,7 @@ interface HallProps {
   seances: SeanceWithHallType[]
 }
 
-export default function Film({film, seances, halls, setIsTicketSelection, setSelectedSeance, setSelectedFilm, setSelectedHall}: FilmProps) {
+export default function Film({film, seances, halls, setClientPage, setSelectedSeance, setSelectedFilm, setSelectedHall}: FilmProps) {
   const groupSeancesOfHalls: Record<number, SeanceWithHallType[]> = {}
   for (const seance of seances) {
     if (!groupSeancesOfHalls[seance.seance_hallid]) groupSeancesOfHalls[seance.seance_hallid] = []
@@ -23,7 +23,7 @@ export default function Film({film, seances, halls, setIsTicketSelection, setSel
   }
 
   function onClickSeance(seance: SeanceWithHallType) {
-    setIsTicketSelection(true)
+    setClientPage('ticketsSelect')
     setSelectedSeance(seance)
     setSelectedFilm(film)
     

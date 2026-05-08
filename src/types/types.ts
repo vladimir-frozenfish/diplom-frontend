@@ -1,3 +1,5 @@
+export type ClientPageType = 'films' | 'ticketsSelect' | 'ticketsBooking'
+
 export interface FilmType {
   id: number
   film_name: string
