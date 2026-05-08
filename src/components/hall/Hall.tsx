@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import type { FilmType, HallType, SeanceWithHallType, DateHallConfig, SeatType } from '../../types/types.ts'
+import type { Dispatch, SetStateAction } from 'react'
+import type { FilmType, HallType, SeanceWithHallType, DateHallConfig, SeatType, ClientPageType, TicketsType } from '../../types/types.ts'
 import { getResponse } from '../../utils/response.ts'
 import { basePath } from '../../enum/enum.ts'
 import styles from './Hall.module.css'
@@ -9,6 +10,9 @@ interface HallProps {
   selectedSeance: SeanceWithHallType | null
   selectedFilm: FilmType | null
   selectedHall: HallType | null
+  setClientPage: (page: ClientPageType) => void
+  tickets: TicketsType
+  setTickets: Dispatch<SetStateAction<TicketsType>>
 }
 
 interface SeatProps {
@@ -21,11 +25,11 @@ function isTicketSelected(tickets: [number, number][], rowIndex: number, seatInd
   return tickets.some(ticket => ticket[0] === rowIndex && ticket[1] === seatIndex)
 }
 
-export default function Hall({selectedDate, selectedSeance, selectedFilm, selectedHall}: HallProps) {
+export default function Hall({selectedDate, selectedSeance, selectedFilm, selectedHall, setClientPage, tickets, setTickets}: HallProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isErrorResponse, setIsErrorResponse] = useState(false)
   const [hallConfig, setHallConfig] = useState<DateHallConfig | null>(null)
-  const [tickets, setTickets] = useState<[number, number][]>([])
+  // const [tickets, setTickets] = useState<[number, number][]>([])
 
   useEffect(() => {
     (async () => {
@@ -60,6 +64,10 @@ export default function Hall({selectedDate, selectedSeance, selectedFilm, select
         return [...prevTickets, [rowIndex, seatIndex]]
       }
     })
+  }
+
+  function onClickBooking() {
+    if (tickets.length) setClientPage('ticketsBooking')
   }
 
   function Seat({seat, rowIndex, seatIndex}: SeatProps) {
@@ -115,7 +123,7 @@ export default function Hall({selectedDate, selectedSeance, selectedFilm, select
         </div>
 
         <div className={styles.hall_booking}>
-          <div className={styles.hall_booking__button}>ЗАБРОНИРОВАТЬ</div>
+          <div className={styles.hall_booking__button} onClick={onClickBooking}>ЗАБРОНИРОВАТЬ</div>
         </div>
       </div>
   )

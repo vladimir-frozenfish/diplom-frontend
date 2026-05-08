@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { getResponse } from '../../utils/response'
-import type { AllDataType, SeanceWithHallType, FilmType, HallType, ClientPageType } from '../../types/types.ts'
+import type { AllDataType, SeanceWithHallType, FilmType, HallType, ClientPageType, TicketsType } from '../../types/types.ts'
 import Calendar from '../calendar/Calendar.tsx'
 import Film from '../film/Film.tsx'
 import styles from './Index.module.css'
 import Hall from '../hall/Hall.tsx'
+import Booking from '../booking/Booking.tsx'
 
 export default function Index() {
   const [allData, setAllData] = useState<AllDataType | null>(null)
@@ -14,6 +15,7 @@ export default function Index() {
   const [selectedSeance, setSelectedSeance] = useState<SeanceWithHallType | null>(null)
   const [selectedFilm, setSelectedFilm] = useState<FilmType | null>(null)
   const [selectedHall, setSelectedHall] = useState<HallType | null>(null)
+  const [tickets, setTickets] = useState<TicketsType>([])
   const [clientPage, setClientPage] = useState<ClientPageType>('films')
 
   useEffect(() => {
@@ -37,6 +39,12 @@ export default function Index() {
     return (<div>Загрузка...</div>)
   }
 
+  if (clientPage == 'ticketsBooking') {
+    return (
+      <Booking />
+    )
+  }
+
   if (clientPage == 'ticketsSelect') {
     return (
       <Hall 
@@ -44,6 +52,10 @@ export default function Index() {
         selectedSeance={selectedSeance} 
         selectedFilm={selectedFilm}
         selectedHall={selectedHall}
+        setClientPage={(page: ClientPageType) => setClientPage(page)}
+        
+        tickets={tickets}
+        setTickets={setTickets}
       />
     )
   }

@@ -48,3 +48,5 @@ export interface DateHallConfig {
 export interface SeanceWithHallType extends SeanceType {
   seance_hallname: string | undefined
 }
+
+export type TicketsType = [number, number][]
