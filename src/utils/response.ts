@@ -4,16 +4,16 @@ type HttpMethodType = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 type RequestOptions = {
   method: HttpMethodType
   headers?: Record<string, string>
-  body?: string
+  body?: URLSearchParams
 }
 
-export async function getResponse(apiPath = '/', responseMethod: HttpMethodType = 'GET', body: string = '') {
+export async function getResponse(apiPath = '/', responseMethod: HttpMethodType = 'GET', contentType: string = 'application/json', body?: URLSearchParams) {
   const options: RequestOptions = {
     method: responseMethod,
   }  
   
   if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(responseMethod)) {
-    options.headers = {'Content-Type': 'application/json'}
+    options.headers = {'Content-Type': contentType}
     options.body = body
   }
 

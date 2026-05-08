@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
-import type { FilmType, HallType, SeanceWithHallType, DateHallConfig, SeatType, ClientPageType, TicketsType } from '../../types/types.ts'
+import type { FilmType, HallType, SeanceWithHallType, DateHallConfig, SeatType, ClientPageType, TicketsType, TicketBookingType } from '../../types/types.ts'
 import { getResponse } from '../../utils/response.ts'
 import { basePath } from '../../enum/enum.ts'
 import styles from './Hall.module.css'
@@ -13,6 +13,7 @@ interface HallProps {
   setClientPage: (page: ClientPageType) => void
   tickets: TicketsType
   setTickets: Dispatch<SetStateAction<TicketsType>>
+  setTicketsBooking: Dispatch<SetStateAction<TicketBookingType[] | null>>
 }
 
 interface SeatProps {
@@ -25,7 +26,7 @@ function isTicketSelected(tickets: TicketsType, rowIndex: number, seatIndex: num
   return tickets.some(ticket => ticket[0] === rowIndex && ticket[1] === seatIndex)
 }
 
-export default function Hall({selectedDate, selectedSeance, selectedFilm, selectedHall, setClientPage, tickets, setTickets}: HallProps) {
+export default function Hall({selectedDate, selectedSeance, selectedFilm, selectedHall, setClientPage, tickets, setTickets, setTicketsBooking}: HallProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isErrorResponse, setIsErrorResponse] = useState(false)
   const [hallConfig, setHallConfig] = useState<DateHallConfig | null>(null)
@@ -69,28 +70,29 @@ export default function Hall({selectedDate, selectedSeance, selectedFilm, select
   }
 
   async function onClickBooking() {
-    if (tickets.length) {
+    if (tickets.length && selectedSeance?.id && selectedDate) {
       
       const ticketsForBody = []
       for (const ticket of tickets) {
-        ticketsForBody.push({row: ticket[0], place: ticket[1], coast: ticket[2]})
+        ticketsForBody.push({row: ticket[0] + 1, place: ticket[1] + 1, coast: ticket[2]})
       }
 
-      const requestBody = {
-        seanceId: selectedSeance?.id,
-        ticketDate: selectedDate.toISOString().split('T')[0],
-        tickets: ticketsForBody
-      }
+      let form = new URLSearchParams()
+      form.append('seanceId', selectedSeance.id.toString())
+      form.append('ticketDate', selectedDate.toISOString().split('T')[0])
+      form.append('tickets', JSON.stringify(ticketsForBody))
 
       try {
-        const response = await getResponse('/ticket', 'POST', JSON.stringify(requestBody))
-        const data = await response.json()
-        console.log(data)
+        const response = await getResponse('/ticket', 'POST', 'application/x-www-form-urlencoded', form)
+        let data = await response.json()
+
+        if (data.success) {
+          setTicketsBooking(data.result)
+          setClientPage('ticketsBooking')
+        }
       } catch(e) {
         console.error(e)
       }
-
-      setClientPage('ticketsBooking')
     }
   }
 

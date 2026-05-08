@@ -50,3 +50,14 @@ export interface SeanceWithHallType extends SeanceType {
 }
 
 export type TicketsType = [number, number, number][]
+
+export interface TicketBookingType {
+  id: number
+  ticket_date: string
+  ticket_filmname: string
+  ticket_hallname: string
+  ticket_place: number
+  ticket_price: number
+  ticket_row: number
+  ticket_time: string
+}

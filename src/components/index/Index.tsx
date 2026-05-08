@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getResponse } from '../../utils/response'
-import type { AllDataType, SeanceWithHallType, FilmType, HallType, ClientPageType, TicketsType } from '../../types/types.ts'
+import type { AllDataType, SeanceWithHallType, FilmType, HallType, ClientPageType, TicketsType, TicketBookingType } from '../../types/types.ts'
 import Calendar from '../calendar/Calendar.tsx'
 import Film from '../film/Film.tsx'
 import styles from './Index.module.css'
@@ -17,6 +17,7 @@ export default function Index() {
   const [selectedHall, setSelectedHall] = useState<HallType | null>(null)
   const [tickets, setTickets] = useState<TicketsType>([])
   const [clientPage, setClientPage] = useState<ClientPageType>('films')
+  const [ticketsBooking, setTicketsBooking] = useState<TicketBookingType[] | null>(null)
 
   useEffect(() => {
     (async () => {
@@ -47,6 +48,7 @@ export default function Index() {
         selectedFilm={selectedFilm}
         selectedHall={selectedHall}
         tickets={tickets}
+        ticketsBooking={ticketsBooking}
       />
     )
   }
@@ -61,6 +63,7 @@ export default function Index() {
         setClientPage={(page: ClientPageType) => setClientPage(page)}
         tickets={tickets}
         setTickets={setTickets}
+        setTicketsBooking={setTicketsBooking}
       />
     )
   }

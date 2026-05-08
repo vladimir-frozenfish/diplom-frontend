@@ -1,4 +1,4 @@
-import type { FilmType, HallType, SeanceWithHallType, TicketsType } from '../../types/types.ts'
+import type { FilmType, HallType, SeanceWithHallType, TicketsType, TicketBookingType } from '../../types/types.ts'
 import styles from './Booking.module.css'
 
 interface BookingProps {
@@ -7,10 +7,13 @@ interface BookingProps {
   selectedFilm: FilmType | null
   selectedHall: HallType | null
   tickets: TicketsType
+  ticketsBooking: TicketBookingType[] | null
 }
 
 
-export default function Booking({selectedDate, selectedSeance, selectedFilm, selectedHall, tickets}: BookingProps) {
+export default function Booking({selectedDate, selectedSeance, selectedFilm, selectedHall, tickets, ticketsBooking}: BookingProps) {
+  console.log(ticketsBooking)
+  
   function ticketPrice() {
     return  tickets.reduce((total, ticket) => {return total + ticket[2]}, 0)
   }
