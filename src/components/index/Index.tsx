@@ -47,7 +47,6 @@ export default function Index() {
         selectedSeance={selectedSeance} 
         selectedFilm={selectedFilm}
         selectedHall={selectedHall}
-        tickets={tickets}
         ticketsBooking={ticketsBooking}
       />
     )

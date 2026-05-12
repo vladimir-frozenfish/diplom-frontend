@@ -12,3 +12,4 @@
   - JS
   - React
   - React Router
+  - react-native-svg, react-qr-code

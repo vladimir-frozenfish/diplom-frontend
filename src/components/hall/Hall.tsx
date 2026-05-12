@@ -77,14 +77,14 @@ export default function Hall({selectedDate, selectedSeance, selectedFilm, select
         ticketsForBody.push({row: ticket[0] + 1, place: ticket[1] + 1, coast: ticket[2]})
       }
 
-      let form = new URLSearchParams()
+      const form = new URLSearchParams()
       form.append('seanceId', selectedSeance.id.toString())
       form.append('ticketDate', selectedDate.toISOString().split('T')[0])
       form.append('tickets', JSON.stringify(ticketsForBody))
 
       try {
         const response = await getResponse('/ticket', 'POST', 'application/x-www-form-urlencoded', form)
-        let data = await response.json()
+        const data = await response.json()
 
         if (data.success) {
           setTicketsBooking(data.result)
