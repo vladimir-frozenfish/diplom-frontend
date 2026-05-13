@@ -1,4 +1,3 @@
-// import styles from './Auth.module.css'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { getResponseFromForm } from '../../utils/response'

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { NavLink } from "react-router"
 import { getResponse } from '../../utils/response'
 import type { AllDataType } from '../../types/types.ts'
+import UpDownContainer from "../../utils/upDownContainer/UpDownContainer.tsx"
 import Auth from "../auth/Auth"
 import styles from './Admin.module.css'
 
@@ -53,7 +54,12 @@ export default function Admin() {
 
         {!isAuth 
           ? <Auth setIsAuth={(auth) => setIsAuth(auth)}/>
-          : <div>Админ часть</div>
+          : 
+            <>
+              <UpDownContainer description="УПРАВЛЕНИЕ ЗАЛАМИ">
+                <div>Доступные залы</div>
+              </UpDownContainer>
+            </>
         }
         </div>
       </div>
