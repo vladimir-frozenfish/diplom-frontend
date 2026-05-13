@@ -66,6 +66,12 @@
   transform: scale(100%);
 }
 
+.admin_form_error {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}
+
 @media (max-width: 769px) {
   .admin_form_container {
     width: 100%;

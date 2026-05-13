@@ -17,7 +17,7 @@ export default function Admin() {
           </div>
 
         {!isAuth 
-          ? <Auth />
+          ? <Auth setIsAuth={(auth) => setIsAuth(auth)}/>
           : <div>Админ часть</div>
         }
         </div>
