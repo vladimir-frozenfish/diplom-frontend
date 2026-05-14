@@ -12,6 +12,7 @@ export default function Admin() {
   const [allData, setAllData] = useState<AllDataType | null>(null)
   const [isErrorResponse, setIsErrorResponse] = useState(false)
   const [isLoading, setIsLoading] = useState(false)  
+  const [isUpdateData, setIsUpdateData] = useState(false)  
 
   useEffect(() => {
     (async () => {
@@ -27,7 +28,7 @@ export default function Admin() {
         }
       }
     })()
-  }, [isAuth])  
+  }, [isAuth, isUpdateData])  
 
   if (isErrorResponse) {
     return (
@@ -58,7 +59,7 @@ export default function Admin() {
           : 
             <>
               <UpDownContainer description="УПРАВЛЕНИЕ ЗАЛАМИ" isFirst={true}>
-                <HallManagement halls={allData?.result.halls}/>
+                <HallManagement halls={allData?.result.halls} setIsUpdateData={setIsUpdateData}/>
               </UpDownContainer>
               
               <UpDownContainer description="КОНФИГУРАЦИЯ ЗАЛОВ">

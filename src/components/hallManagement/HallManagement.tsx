@@ -1,14 +1,16 @@
 import { useState } from 'react'
-import type { FormEvent } from 'react'
+import type { FormEvent, Dispatch, SetStateAction } from 'react'
 import type { HallType } from '../../types/types.ts'
 import { basePath } from '../../enum/enum.ts'
-// import { QRCode } from 'react-qr-code'
+import { getResponseFromForm } from '../../utils/response.ts'
+import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
 import Button from '../../utils/button/Button.tsx'
 import styles from './HallManagement.module.css'
 import stylesAdminForm from  '../../css/FormAdmin.module.css'
 
 interface HallManagementProps {
   halls: HallType[] | undefined
+  setIsUpdateData: Dispatch<SetStateAction<boolean>>
   // selectedDate: Date
   // selectedSeance: SeanceWithHallType | null
   // selectedFilm: FilmType | null
@@ -16,31 +18,39 @@ interface HallManagementProps {
   // ticketsBooking: TicketBookingType[] | null
 }
 
-export default function HallManagement({halls}: HallManagementProps) {
+export default function HallManagement({halls, setIsUpdateData}: HallManagementProps) {
   const [isAddHall, setIsAddHall] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isAddHallError, setIsAddHallError] = useState(false)
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    setIsAddHall(false)
-    // const form = new FormData(e.currentTarget)
+    setIsLoading(true)
+    
+    const form = new FormData(e.currentTarget)
 
-    // try {
-    //   const response = await getResponseFromForm('/login', 'POST', form)
-    //   const data = await response.json()
+    try {
+      const response = await getResponseFromForm('/hall', 'POST', form)
+      const data = await response.json()
 
-    //   if (data.success && data.result == 'Авторизация пройдена успешно!') {
-    //     setIsAuth(true)
-    //   } else {
-    //     setIsAuthError(true)
-    //   }
-    // } catch(e) {
-    //   console.error(e)
-    // }    
+      if (data.success) {
+        setIsAddHall(false)
+        setIsUpdateData((current) => !current)
+      } else {
+        setIsAddHallError(true)
+      }
+      
+    } catch(e) {
+      console.error(e)
+    }
+    
+    setIsLoading(false)
   }
 
   function onReset() {
     setIsAddHall(false)
+    setIsAddHallError(false)
   }
 
   return (
@@ -69,17 +79,21 @@ export default function HallManagement({halls}: HallManagementProps) {
               <form className={stylesAdminForm.admin_form} onSubmit={onSubmit} onReset={onReset}>
                 <div  className={stylesAdminForm.admin_form_fields}>
                   <div className={stylesAdminForm.admin_form_description}>Название зала</div>
-                  <input placeholder='Зал 1' name='hallName' className={stylesAdminForm.admin_form_input}/>
+                  <input placeholder='Зал 1' name='hallName' className={stylesAdminForm.admin_form_input + ' ' + styles.hall_management_add_hall_input} required/>
                 </div>
 
                 <div className={stylesAdminForm.admin_form_buttons}>
                   <button type="submit" className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>ДОБАВИТЬ ЗАЛ</button>
                   <button type="reset" className={stylesAdminForm.admin_form_button}>ОТМЕНИТЬ</button>
-                </div>                
+                </div>
+
+                {isAddHallError && <div className={stylesAdminForm.admin_form_error}>Не удалось добавить зал.</div>}
               </form>
             </div>
           </div>
         }
+
+        {isLoading && <LoadingModal />}
       </div>
   )
 }
