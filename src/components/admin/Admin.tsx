@@ -4,6 +4,7 @@ import { getResponse } from '../../utils/response'
 import type { AllDataType } from '../../types/types.ts'
 import UpDownContainer from "../../utils/upDownContainer/UpDownContainer.tsx"
 import Auth from "../auth/Auth"
+import HallManagement from "../hallManagement/HallManagement.tsx"
 import styles from './Admin.module.css'
 
 export default function Admin() {
@@ -57,7 +58,7 @@ export default function Admin() {
           : 
             <>
               <UpDownContainer description="УПРАВЛЕНИЕ ЗАЛАМИ" isFirst={true}>
-                <div>Доступные залы:</div>
+                <HallManagement halls={allData?.result.halls}/>
               </UpDownContainer>
               
               <UpDownContainer description="КОНФИГУРАЦИЯ ЗАЛОВ">
