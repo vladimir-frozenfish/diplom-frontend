@@ -56,9 +56,13 @@ export default function Admin() {
           ? <Auth setIsAuth={(auth) => setIsAuth(auth)}/>
           : 
             <>
-              <UpDownContainer description="УПРАВЛЕНИЕ ЗАЛАМИ">
-                <div>Доступные залы</div>
+              <UpDownContainer description="УПРАВЛЕНИЕ ЗАЛАМИ" isFirst={true}>
+                <div>Доступные залы:</div>
               </UpDownContainer>
+              
+              <UpDownContainer description="КОНФИГУРАЦИЯ ЗАЛОВ">
+                <div>Выберите зал для конфигурации:</div>
+              </UpDownContainer>              
             </>
         }
         </div>
