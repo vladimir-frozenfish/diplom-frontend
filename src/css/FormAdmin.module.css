@@ -34,6 +34,14 @@
   padding: 35px 100px;
 }
 
+.admin_form_caption {
+  text-align: center;
+}
+
+.admin_form_caption span {
+  font-weight: bold;
+}
+
 .admin_form_fields {
   display: flex;
   flex-direction: column;

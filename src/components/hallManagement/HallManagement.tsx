@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { FormEvent, Dispatch, SetStateAction } from 'react'
 import type { HallType } from '../../types/types.ts'
 import { basePath } from '../../enum/enum.ts'
-import { getResponseFromForm } from '../../utils/response.ts'
+import { getResponseFromForm, getResponse } from '../../utils/response.ts'
 import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
 import Button from '../../utils/button/Button.tsx'
 import styles from './HallManagement.module.css'
@@ -11,17 +11,14 @@ import stylesAdminForm from  '../../css/FormAdmin.module.css'
 interface HallManagementProps {
   halls: HallType[] | undefined
   setIsUpdateData: Dispatch<SetStateAction<boolean>>
-  // selectedDate: Date
-  // selectedSeance: SeanceWithHallType | null
-  // selectedFilm: FilmType | null
-  // selectedHall: HallType | null
-  // ticketsBooking: TicketBookingType[] | null
 }
 
 export default function HallManagement({halls, setIsUpdateData}: HallManagementProps) {
   const [isAddHall, setIsAddHall] = useState(false)
+  const [deleteHall, setDeleteAddHall] = useState<HallType | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isAddHallError, setIsAddHallError] = useState(false)
+  const [isDeleteHalllError, setIsDeleteHallError] = useState(false)
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -48,6 +45,33 @@ export default function HallManagement({halls, setIsUpdateData}: HallManagementP
     setIsLoading(false)
   }
 
+  async function onSubmitDelete(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setIsLoading(true)
+    
+    try {
+      const response = await getResponse(`/hall/${deleteHall?.id}`, 'DELETE')
+      const data = await response.json()
+
+      if (data.success) {
+        setDeleteAddHall(null)
+        setIsUpdateData((current) => !current)
+      } else {
+        setIsDeleteHallError(true)
+      }
+      
+    } catch(e) {
+      console.error(e)
+    }
+    
+    setIsLoading(false)
+  }
+
+  function onResetDelete() {
+    setDeleteAddHall(null)
+    setIsDeleteHallError(false)
+  }
+
   function onReset() {
     setIsAddHall(false)
     setIsAddHallError(false)
@@ -61,7 +85,7 @@ export default function HallManagement({halls, setIsUpdateData}: HallManagementP
             halls.map((hall, index) => (
               <li key={index}>
                 <div>{hall.hall_name}</div>
-                <div className={styles.hall_management_delete}>
+                <div className={styles.hall_management_delete} onClick={() => setDeleteAddHall(hall)}>
                   <img src={basePath + '/delete.svg'} alt="Удалить" />
                 </div>
               </li>
@@ -88,6 +112,24 @@ export default function HallManagement({halls, setIsUpdateData}: HallManagementP
                 </div>
 
                 {isAddHallError && <div className={stylesAdminForm.admin_form_error}>Не удалось добавить зал.</div>}
+              </form>
+            </div>
+          </div>
+        }
+
+        {deleteHall && 
+          <div className={stylesAdminForm.admin_form_modal}>
+            <div className={stylesAdminForm.admin_form_container}>
+              <div className={stylesAdminForm.admin_form_header}>УДАЛЕНИЕ ЗАЛА</div>
+              <form className={stylesAdminForm.admin_form} onSubmit={onSubmitDelete} onReset={onResetDelete}>
+                <div className={stylesAdminForm.admin_form_caption}>Вы хотите удалить зал - <span>{deleteHall.hall_name}?</span></div>
+
+                <div className={stylesAdminForm.admin_form_buttons}>
+                  <button type="submit" className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>УДАЛИТЬ ЗАЛ</button>
+                  <button type="reset" className={stylesAdminForm.admin_form_button}>ОТМЕНИТЬ</button>
+                </div>
+
+                {isDeleteHalllError && <div className={stylesAdminForm.admin_form_error}>Не удалось удалить зал.</div>}
               </form>
             </div>
           </div>
