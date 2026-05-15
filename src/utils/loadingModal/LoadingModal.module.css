@@ -1,0 +1,34 @@
+.loading_modal {
+  display: flex;
+  background-color: rgba(125, 125, 125, 0.1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.loading_modal_icon {
+  height: 50%;
+  fill: orange;
+}
+
+/* анимация вращения */
+.loading_modal_rotate {
+  animation-name: rotation;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes rotation {
+    0% {
+        transform:rotate(0deg);
+    }
+    100% {
+        transform:rotate(360deg);
+    }
+}

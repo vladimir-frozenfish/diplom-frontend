@@ -1,0 +1,55 @@
+.hall_management_halls {
+  list-style: none;
+  padding: 14px 0 22px 11px;
+  
+  /* display: flex;
+  flex-direction: column;
+  row-gap: 10px; */
+  display: grid;
+  grid-template-columns: max-content;
+  row-gap: 10px;
+}
+
+.hall_management_halls li {
+  position: relative;
+  padding-left: 1em;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 4px;
+}
+
+.hall_management_halls li::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  margin-left: 0;
+  color: inherit;
+}
+
+.hall_management_delete {
+  background-color: white;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.hall_management_delete:hover {
+  background-color: rgb(203, 203, 203);
+}
+
+.hall_management_delete:active {
+  background-color: white;
+}
+
+@media (max-width: 391px) {
+  .hall_management_buttons {
+    display: flex;
+    justify-content: center;
+  }
+}

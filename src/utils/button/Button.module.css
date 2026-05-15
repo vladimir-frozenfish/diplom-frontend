@@ -1,0 +1,21 @@
+.button {
+  width: min-content;
+  box-sizing: border-box;
+  cursor: pointer;
+  white-space: nowrap;
+  padding: 12px 32px;
+  color: white;
+  background-color: rgba(22, 166, 175, 1);
+  border-radius: 3px;
+  border-style: none;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.24);
+}
+
+.button:hover {
+  transform: scale(105%);
+}
+
+.button:active {
+  transform: scale(98%);
+}

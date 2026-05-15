@@ -25,6 +25,10 @@
   font-weight: 900;
 }
 
+.app_logo span {
+  font-weight: 100;
+}
+
 .app_signin {
   font-size: 14px;
   color: white;
@@ -42,10 +46,6 @@
 
 .app_signin:active {
   transform: scale(100%);
-}
-
-.app_logo span {
-  font-weight: 100;
 }
 
 @media (max-width: 768px) {

@@ -1,0 +1,51 @@
+.admin {
+  min-height: 100vh;
+  background-image: url('/admin/bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.admin_container {
+  max-width: 990px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.admin_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+.admin_logo_link {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.admin_logo {
+  font-size: 34px;
+  font-weight: 900;
+}
+
+.admin_logo span {
+  font-weight: 100;
+}
+
+.admin_logo_title {
+  font-size: 10px;
+  letter-spacing: 5px;
+}
+
+
+@media (max-width: 768px) {
+  .admin_container {
+    width: 100%;
+  }
+}
