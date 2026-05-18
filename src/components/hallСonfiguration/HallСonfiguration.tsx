@@ -23,7 +23,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
   // const [isAddHall, setIsAddHall] = useState(false)
   // const [deleteHall, setDeleteAddHall] = useState<HallType | null>(null)
   const [currentHall, setCurrentHall] = useState<HallType | null>(null)
-  const [configHall, setСonfigHall] = useState<SeatType[][] | null>(null)
+  // const [configHall, setСonfigHall] = useState<SeatType[][] | null>(null)
   const [rowsHall, setRowsHall] = useState(0)
   const [placesHall, setPlacesHall] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
@@ -64,14 +64,40 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
     setCurrentHall(hall)
     setRowsHall(hall.hall_rows)
     setPlacesHall(hall.hall_places)
-    setСonfigHall(hall.hall_config)
+    // setСonfigHall(hall.hall_config)
     // console.log(hall)
   }
 
   function onClickSeat({seat, rowIndex, seatIndex}: SeatProps) {
-    console.log(seat)
-    console.log(rowIndex)
-    console.log(seatIndex)
+    // console.log(seat)
+    // console.log(rowIndex)
+    // console.log(seatIndex)
+    
+    let nextSeat: SeatType = 'standart'
+    switch (seat) {
+      case 'standart':
+        nextSeat = 'vip'
+        break
+      case 'vip':
+        nextSeat = 'disabled'
+        break
+      case 'disabled':
+        nextSeat = 'standart'
+        break
+    }
+
+    setCurrentHall((prevHall) => {
+      if (!prevHall) {return null}
+      else {
+        const tempHallConfig = prevHall.hall_config
+        tempHallConfig[rowIndex][seatIndex] = nextSeat
+        return {
+          ...prevHall, 
+          hall_config: tempHallConfig
+        }
+      }
+    })
+    
     // if (seat === 'taken' || seat === 'disabled') {
     //   return
     // }
@@ -120,7 +146,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
       })
     }
     setRowsHall(currentRows)
-    console.log(currentHall?.hall_config)
+    // console.log(currentHall?.hall_config)
   }
 
   function onChangePlaces(e: React.ChangeEvent<HTMLInputElement>) {
@@ -130,7 +156,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
       setCurrentHall((prevHall) => {
         if (!prevHall) return null
         else {
-          let rows = []
+          const rows = []
           for (const row of prevHall.hall_config) {
             // console.log(row)
             rows.push(row.slice(0, currentPlaces))
@@ -144,7 +170,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
         if (!prevHall) return null
         else {
           const addPlaces = Array(currentPlaces - placesHall).fill('standart')
-          let rows = []
+          const rows = []
           for (const row of prevHall.hall_config) {
             rows.push([...row, ...addPlaces])
           }
