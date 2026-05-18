@@ -100,6 +100,62 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
     )
   }
 
+  function onChangeRows(e: React.ChangeEvent<HTMLInputElement>) {
+    const currentRows = +e.currentTarget.value > 0 ? +e.currentTarget.value : 1
+    // уменьшаем или увеличиваем колиество рядов в зале
+    if (currentRows < rowsHall) {
+      setCurrentHall((prevHall) => {
+        if (!prevHall) return null
+        else {return {...prevHall, hall_config: prevHall.hall_config.slice(0, currentRows)}}
+      })
+    }
+    if (currentRows > rowsHall) {
+      setCurrentHall((prevHall) => {
+        if (!prevHall) return null
+        else {
+          const addRow = Array(placesHall).fill('standart')
+          const addRows = Array(currentRows - rowsHall).fill(addRow)
+          return {...prevHall, hall_config: [...prevHall.hall_config, ...addRows]}
+        }
+      })
+    }
+    setRowsHall(currentRows)
+    console.log(currentHall?.hall_config)
+  }
+
+  function onChangePlaces(e: React.ChangeEvent<HTMLInputElement>) {
+    const currentPlaces = +e.currentTarget.value > 0 ? +e.currentTarget.value : 1
+    // уменьшаем или увеличиваем колиество мест в каждом ряду в зале
+    if (currentPlaces < placesHall) {
+      setCurrentHall((prevHall) => {
+        if (!prevHall) return null
+        else {
+          let rows = []
+          for (const row of prevHall.hall_config) {
+            // console.log(row)
+            rows.push(row.slice(0, currentPlaces))
+          }
+          return {...prevHall, hall_config: rows}
+        }
+      })    
+    }
+    if (currentPlaces > placesHall) {
+      setCurrentHall((prevHall) => {
+        if (!prevHall) return null
+        else {
+          const addPlaces = Array(currentPlaces - placesHall).fill('standart')
+          let rows = []
+          for (const row of prevHall.hall_config) {
+            rows.push([...row, ...addPlaces])
+          }
+          return {...prevHall, hall_config: rows}
+        }
+      })
+    }
+    
+    setPlacesHall(currentPlaces)
+  }
+
   return (
       <div>
         <div>Выберите зал для конфигурации:</div>
@@ -122,7 +178,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
           <div className={styles.hall_configuration_rows_inputs}>
             <div className={styles.hall_configuration_rows_input_filed}>
               <div className={styles.hall_configuration_rows_input_title}>Рядов, шт</div>
-              <input className={styles.hall_configuration_rows_input} type='number' value={rowsHall} onChange={(e) => setRowsHall(+e.currentTarget.value)}></input>
+              <input className={styles.hall_configuration_rows_input} type='number' min={1} value={rowsHall} onChange={onChangeRows} onKeyDown={(e) => e.preventDefault()}></input>
             </div>
             <div>
               <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -131,7 +187,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
             </div>
             <div className={styles.hall_configuration_rows_input_filed}>
               <div className={styles.hall_configuration_rows_input_title}>Мест, шт</div>
-              <input className={styles.hall_configuration_rows_input} type='number' value={placesHall} onChange={(e) => setPlacesHall(+e.currentTarget.value)}></input>
+              <input className={styles.hall_configuration_rows_input} type='number' min={1} value={placesHall} onChange={onChangePlaces} onKeyDown={(e) => e.preventDefault()}></input>
             </div>            
           </div>
         </div>
