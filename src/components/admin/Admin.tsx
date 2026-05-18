@@ -5,6 +5,7 @@ import type { AllDataType } from '../../types/types.ts'
 import UpDownContainer from "../../utils/upDownContainer/UpDownContainer.tsx"
 import Auth from "../auth/Auth"
 import HallManagement from "../hallManagement/HallManagement.tsx"
+import HallСonfiguration from "../hallСonfiguration/HallСonfiguration.tsx"
 import styles from './Admin.module.css'
 
 export default function Admin() {
@@ -63,7 +64,7 @@ export default function Admin() {
               </UpDownContainer>
               
               <UpDownContainer description="КОНФИГУРАЦИЯ ЗАЛОВ">
-                <div>Выберите зал для конфигурации:</div>
+                <HallСonfiguration halls={allData?.result.halls} setIsUpdateData={setIsUpdateData}/>
               </UpDownContainer>              
             </>
         }
