@@ -26,6 +26,7 @@
   height: 52px;
   flex: 2;
   font-weight: bold;
+  font-size: 15px;
 }
 
 .calendar_day_weekend {
