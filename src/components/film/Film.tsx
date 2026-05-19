@@ -36,7 +36,7 @@ export default function Film({film, seances, halls, setClientPage, setSelectedSe
       <div>
         <div className={styles.film_hallname}>{seances[0].seance_hallname ? seances[0].seance_hallname.charAt(0).toUpperCase() + seances[0].seance_hallname.slice(1) : '-'}</div>
         <div className={styles.film_seances}>
-          {seances.map((seance, index) => <div onClick={() => onClickSeance(seance)} key={index} className={styles.film_seance}>{seance.seance_time}</div>)}
+          {seances.sort((a, b) => a.seance_time.localeCompare(b.seance_time)).map((seance, index) => <div onClick={() => onClickSeance(seance)} key={index} className={styles.film_seance}>{seance.seance_time}</div>)}
         </div>
       </div>
     )
