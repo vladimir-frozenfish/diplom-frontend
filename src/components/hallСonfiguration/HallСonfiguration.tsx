@@ -4,7 +4,7 @@ import type { HallType, SeatType } from '../../types/types.ts'
 // import { basePath } from '../../enum/enum.ts'
 // import { getResponseFromForm, getResponse } from '../../utils/response.ts'
 import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
-// import Button from '../../utils/button/Button.tsx'
+import Button from '../../utils/button/Button.tsx'
 import styles from './HallСonfiguration.module.css'
 // import stylesAdminForm from  '../../css/FormAdmin.module.css'
 
@@ -257,22 +257,12 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
             }
 
           </div>
-
-
-          {/* 
-            <div className={styles.hall_selection_seats}>
-              {hallConfig?.result.map((hallrow, rowIndex) => 
-                <div key={rowIndex} className={styles.hall_selection_seats_row}>{hallrow.map((seat, seatIndex) => 
-                  <Seat key={seatIndex} seat={seat} rowIndex={rowIndex} seatIndex={seatIndex} />
-                )}</div>
-              )}
-            </div>                  
-          */}
         </div>
 
-        {/* <div className={styles.hall_management_buttons}>
-          <Button text='СОЗДАТЬ ЗАЛ' onClick={() => {setIsAddHall(true)}} />
-        </div> */}
+        <div className={styles.hall_configuration_buttons}>
+          <Button text='ОТМЕНА' isCancel={true} onClick={() => setIsUpdateData((current) => !current)} />
+          <Button text='СОХРАНИТЬ' onClick={() => {}} />
+        </div>
 
         {isLoading && <LoadingModal />}
       </div>

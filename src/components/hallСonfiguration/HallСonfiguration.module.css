@@ -110,6 +110,7 @@
 .hall_configuration_seat_schema_container {
   border: 1px solid rgba(0, 0, 0, 1);
   margin-top: 11px;
+  margin-bottom: 26px;
   box-sizing: border-box;
   padding-top: 26px;
   padding-bottom: 36px;
@@ -134,4 +135,11 @@
   display: flex;
   flex-wrap: nowrap;
   column-gap: 4px;  
+}
+
+.hall_configuration_buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 15px;
 }
