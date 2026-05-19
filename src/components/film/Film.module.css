@@ -79,3 +79,10 @@
 .film_seance:active {
   background-color: white;
 }
+
+@media (max-width: 769px) {
+  .film_rectangle {
+    background-color: rgba(119, 39, 32, 1);
+    clip-path: polygon(0 0, 100% 14%, 100% 100%, 0% 100%);
+  }
+}
