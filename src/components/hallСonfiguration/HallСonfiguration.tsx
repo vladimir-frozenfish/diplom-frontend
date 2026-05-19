@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent, Dispatch, SetStateAction } from 'react'
 import type { HallType, SeatType } from '../../types/types.ts'
-// import { basePath } from '../../enum/enum.ts'
 import { getResponseFromForm } from '../../utils/response.ts'
 import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
 import Button from '../../utils/button/Button.tsx'
@@ -21,58 +20,19 @@ interface SeatProps {
 
 export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСonfigurationProps) {
   const [isConfirmHall, setIsConfirmHall] = useState(false)
-  // const [deleteHall, setDeleteAddHall] = useState<HallType | null>(null)
   const [currentHall, setCurrentHall] = useState<HallType | null>(null)
-  // const [configHall, setСonfigHall] = useState<SeatType[][] | null>(null)
   const [rowsHall, setRowsHall] = useState(0)
   const [placesHall, setPlacesHall] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
-  // const [isAddHallError, setIsAddHallError] = useState(false)
   const [isСonfigurationHalllError, setIsСonfigurationHallError] = useState(false)
-
-  // async function onSubmit(e: FormEvent<HTMLFormElement>) {
-  //   e.preventDefault()
-
-  //   setIsLoading(true)
-    
-  //   const form = new FormData(e.currentTarget)
-
-  //   try {
-  //     const response = await getResponseFromForm('/hall', 'POST', form)
-  //     const data = await response.json()
-
-  //     if (data.success) {
-  //       setIsAddHall(false)
-  //       setIsUpdateData((current) => !current)
-  //     } else {
-  //       setIsAddHallError(true)
-  //     }
-      
-  //   } catch(e) {
-  //     console.error(e)
-  //   }
-    
-  //   setIsLoading(false)
-  // }
-
-  // function onReset() {
-  //   setIsAddHall(false)
-  //   setIsAddHallError(false)
-  // }
 
   function onClickHall(hall: HallType) {
     setCurrentHall(hall)
     setRowsHall(hall.hall_rows)
     setPlacesHall(hall.hall_places)
-    // setСonfigHall(hall.hall_config)
-    // console.log(hall)
   }
 
   function onClickSeat({seat, rowIndex, seatIndex}: SeatProps) {
-    // console.log(seat)
-    // console.log(rowIndex)
-    // console.log(seatIndex)
-    
     let nextSeat: SeatType = 'standart'
     switch (seat) {
       case 'standart':
@@ -97,29 +57,12 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
         }
       }
     })
-    
-    // if (seat === 'taken' || seat === 'disabled') {
-    //   return
-    // }
-
-    // let seatPrice = seat == 'standart' ? selectedHall?.hall_price_standart : selectedHall?.hall_price_vip
-    // if (!seatPrice) seatPrice = 0
-
-    // setTickets(prevTickets => {
-    //   if (isTicketSelected(prevTickets, rowIndex, seatIndex)) {
-    //     return prevTickets.filter(ticket => !(ticket[0] === rowIndex && ticket[1] === seatIndex))
-    //   } else {
-    //     return [...prevTickets, [rowIndex, seatIndex, seatPrice]]
-    //   }
-    // })
   }
 
   function Seat({seat, rowIndex, seatIndex}: SeatProps) {
     let seatStyle = styles.hall_configuration_seat
     if (seat == 'vip') seatStyle += ' ' + styles.hall_configuration_seat_vip
     if (seat == 'disabled') seatStyle += ' ' + styles.hall_configuration_seat_disabled
-    // if (seat == 'taken') seatStyle += ' ' + styles.hall_seat_taken
-    // if (isTicketSelected(tickets, rowIndex, seatIndex)) seatStyle += ' ' + styles.hall_seat_selected
     
     return (
       <div className={seatStyle} onClick={() => onClickSeat({seat, rowIndex, seatIndex})}></div>
@@ -146,7 +89,6 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
       })
     }
     setRowsHall(currentRows)
-    // console.log(currentHall?.hall_config)
   }
 
   function onChangePlaces(e: React.ChangeEvent<HTMLInputElement>) {
@@ -158,7 +100,6 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
         else {
           const rows = []
           for (const row of prevHall.hall_config) {
-            // console.log(row)
             rows.push(row.slice(0, currentPlaces))
           }
           return {...prevHall, hall_config: rows}
