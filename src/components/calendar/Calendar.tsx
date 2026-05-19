@@ -1,3 +1,4 @@
+import { areDatesEqual } from '../../utils/utils'
 import styles from './Calendar.module.css'
 
 interface CalendarProps {
@@ -10,14 +11,6 @@ interface DayProps {
 }
 
 const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
-
-function areDatesEqual(dateOne: Date, dateTwo: Date): boolean {
-  return (
-    dateOne.getFullYear() === dateTwo.getFullYear() &&
-    dateOne.getMonth() === dateTwo.getMonth() &&
-    dateOne.getDate() === dateTwo.getDate()
-  )
-}
 
 export default function Calendar({selectedDate, onSelectDate}: CalendarProps) {
   const currentDate = new Date()

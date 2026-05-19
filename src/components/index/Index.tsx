@@ -86,6 +86,7 @@ export default function Index() {
             setSelectedSeance={(seance: SeanceWithHallType) => setSelectedSeance(seance)}
             setSelectedFilm={(film: FilmType) => setSelectedFilm(film)}
             setSelectedHall={(hall: HallType | null) => setSelectedHall(hall)}
+            selectedDate={selectedDate}
           />
         )}
       </div>

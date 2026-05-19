@@ -80,6 +80,11 @@
   background-color: white;
 }
 
+.film_seance_not_active {
+  pointer-events: none;
+  background-color: grey;
+}
+
 @media (max-width: 769px) {
   .film_rectangle {
     background-color: rgba(119, 39, 32, 1);
