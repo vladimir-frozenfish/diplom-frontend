@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import type { Dispatch, SetStateAction } from 'react'
+import type { FormEvent, Dispatch, SetStateAction } from 'react'
 import type { HallType, SeatType } from '../../types/types.ts'
 // import { basePath } from '../../enum/enum.ts'
-// import { getResponseFromForm, getResponse } from '../../utils/response.ts'
+import { getResponseFromForm } from '../../utils/response.ts'
 import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
 import Button from '../../utils/button/Button.tsx'
 import styles from './HallСonfiguration.module.css'
-// import stylesAdminForm from  '../../css/FormAdmin.module.css'
+import stylesAdminForm from  '../../css/FormAdmin.module.css'
 
 interface HallHallСonfigurationProps {
   halls: HallType[] | undefined
@@ -20,7 +20,7 @@ interface SeatProps {
 }
 
 export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСonfigurationProps) {
-  // const [isAddHall, setIsAddHall] = useState(false)
+  const [isConfirmHall, setIsConfirmHall] = useState(false)
   // const [deleteHall, setDeleteAddHall] = useState<HallType | null>(null)
   const [currentHall, setCurrentHall] = useState<HallType | null>(null)
   // const [configHall, setСonfigHall] = useState<SeatType[][] | null>(null)
@@ -28,7 +28,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
   const [placesHall, setPlacesHall] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   // const [isAddHallError, setIsAddHallError] = useState(false)
-  // const [isDeleteHalllError, setIsDeleteHallError] = useState(false)
+  const [isСonfigurationHalllError, setIsСonfigurationHallError] = useState(false)
 
   // async function onSubmit(e: FormEvent<HTMLFormElement>) {
   //   e.preventDefault()
@@ -182,6 +182,38 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
     setPlacesHall(currentPlaces)
   }
 
+  async function onConfirm(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setIsLoading(true)
+    
+    const form = new FormData()
+    form.set('rowCount', String(rowsHall))
+    form.set('placeCount', String(placesHall))
+    form.set('config', JSON.stringify(currentHall?.hall_config))
+
+    try {
+      const response = await getResponseFromForm(`/hall/${currentHall?.id}`, 'POST', form)
+      const data = await response.json()
+
+      if (data.success) {
+        setIsConfirmHall(false)
+        setIsUpdateData((current) => !current)
+      } else {
+        setIsСonfigurationHallError(true)
+      }
+      
+    } catch(e) {
+      console.error(e)
+    }
+    
+    setIsLoading(false)
+  }
+
+  function onResetConfirm() {
+    setIsConfirmHall(false)
+    setIsСonfigurationHallError(false)
+  }
+
   return (
       <div>
         <div>Выберите зал для конфигурации:</div>
@@ -260,9 +292,27 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСo
         </div>
 
         <div className={styles.hall_configuration_buttons}>
-          <Button text='ОТМЕНА' isCancel={true} onClick={() => setIsUpdateData((current) => !current)} />
-          <Button text='СОХРАНИТЬ' onClick={() => {}} />
+          <Button text='ОТМЕНА' isCancel={true} onClick={() => {if (currentHall) setIsUpdateData((current) => !current)}} />
+          <Button text='СОХРАНИТЬ' onClick={() => {if (currentHall) setIsConfirmHall(true)}} />
         </div>
+
+        {isConfirmHall && 
+          <div className={stylesAdminForm.admin_form_modal}>
+            <div className={stylesAdminForm.admin_form_container}>
+              <div className={stylesAdminForm.admin_form_header}>КОНФИГУРАЦИЯ ЗАЛА</div>
+              <form className={stylesAdminForm.admin_form} onSubmit={onConfirm} onReset={onResetConfirm}>
+                <div className={stylesAdminForm.admin_form_caption}>Сохранить конфигурацию зала - <span>{currentHall?.hall_name}?</span></div>
+
+                <div className={stylesAdminForm.admin_form_buttons}>
+                  <button type="submit" className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>СОХРАНИТЬ</button>
+                  <button type="reset" className={stylesAdminForm.admin_form_button}>ОТМЕНИТЬ</button>
+                </div>
+
+                {isСonfigurationHalllError && <div className={stylesAdminForm.admin_form_error}>Не удалось сохранить зал.</div>}
+              </form>
+            </div>
+          </div>
+        }            
 
         {isLoading && <LoadingModal />}
       </div>
