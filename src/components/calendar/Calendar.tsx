@@ -55,7 +55,7 @@ export default function Calendar({selectedDate, onSelectDate}: CalendarProps) {
   return (
     <div className={styles.calendar}>
         {dates.map((date, index) => <Day key={index} date={date} />)}
-        <div className={styles.calendar_day}>{'>'}</div>
+        <div className={styles.calendar_day + ' ' + styles.calendar_day_more}>{'>'}</div>
       </div>
   )
 }
