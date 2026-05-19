@@ -46,10 +46,11 @@ export default function Film({film, seances, halls, setClientPage, setSelectedSe
     <div className={styles.film}>
       <div className={styles.film_poster_and_description}>
         <img src={film.film_poster} className={styles.film_poster}/>
-        <div>
+        <div className={styles.film_description_container}>
           <div className={styles.film_name}>{film.film_name}</div>
           <div className={styles.film_description}>{film.film_description}</div>
           <div className={styles.film_duration}>{film.film_duration} минут {film.film_origin}</div>
+          <div className={styles.film_rectangle}></div>
         </div>
       </div>
 

@@ -17,6 +17,10 @@
   height: 175px;
 }
 
+.film_description_container {
+  position: relative;
+}
+
 .film_name {
   font-weight: bold;
   margin-bottom: 10px;
@@ -28,6 +32,15 @@
 
 .film_duration {
   font-weight: 300;
+}
+
+.film_rectangle {
+  position: absolute;
+  width: 6px;
+  height: 14px;
+  background-color: rgba(57, 57, 57, 1);
+  left: -14px;
+  top: 0;
 }
 
 .film_hallname_seances {
