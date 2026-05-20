@@ -34,7 +34,7 @@ export default function Booking({selectedDate, selectedSeance, selectedFilm, sel
   return (
       <div>
         <div className={styles.booking_ticket_img}></div>
-        <div className={styles.booking_greating}>ВЫ ВЫБРАЛИ БИЛЕТЫ</div>
+        <div className={styles.booking_greating}>{!isShowQrCode ? 'ВЫ ВЫБРАЛИ БИЛЕТЫ' : 'ЭЛЕКТРОННЫЙ БИЛЕТ'}</div>
         <div className={styles.booking_ticket_img + ' ' + styles.booking_ticket_img_scale}></div>
         <div className={styles.booking_ticket_img}></div>
 
