@@ -17,6 +17,10 @@
   height: 175px;
 }
 
+.film_description_container {
+  position: relative;
+}
+
 .film_name {
   font-weight: bold;
   margin-bottom: 10px;
@@ -24,10 +28,21 @@
 
 .film_description {
   margin-bottom: 10px;
+  font-size: 14px;
 }
 
 .film_duration {
   font-weight: 300;
+  font-size: 14px;
+}
+
+.film_rectangle {
+  position: absolute;
+  width: 6px;
+  height: 14px;
+  background-color: rgba(57, 57, 57, 1);
+  left: -14px;
+  top: 0;
 }
 
 .film_hallname_seances {
@@ -54,6 +69,7 @@
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.24);
   border-radius: 2px;
   cursor: pointer;
+  font-size: 15px;
 }
 
 .film_seance:hover {
@@ -62,4 +78,16 @@
 
 .film_seance:active {
   background-color: white;
+}
+
+.film_seance_not_active {
+  pointer-events: none;
+  background-color: grey;
+}
+
+@media (max-width: 769px) {
+  .film_rectangle {
+    background-color: rgba(119, 39, 32, 1);
+    clip-path: polygon(0 0, 100% 14%, 100% 100%, 0% 100%);
+  }
 }

@@ -4,6 +4,7 @@
 }
 
 .hall_title {
+  position: relative;
   padding: 15px;
   box-sizing: border-box;
   display: flex;
@@ -17,6 +18,31 @@
 
 .hall_title__light {
   font-weight: 300;
+  font-size: 14px;
+}
+
+.hall_title_tap {
+  display: none;
+  position: absolute;
+  width: 100px;
+  height: 64px;
+  top: 50%;
+  right: 15px;
+  transform: translate(0, -50%);
+}
+
+.hall_title_tap_desc {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.hall_title_tap_hand {
+  position: absolute;
+  width: 24px;
+  height: 32px;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .hall_schema_bg {
@@ -126,4 +152,10 @@
   display: flex;
   flex-wrap: nowrap;
   column-gap: 4px;
+}
+
+@media (max-width: 769px) {
+  .hall_title_tap {
+    display: block;
+  }
 }
