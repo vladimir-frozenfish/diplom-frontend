@@ -115,6 +115,10 @@ export default function Hall({selectedDate, selectedSeance, selectedFilm, select
           <div className={styles.hall_title__light}>Дата: {selectedDate.toLocaleDateString('ru-Ru')}</div>
           <div className={styles.hall_title__light}>Начало сеанса: {selectedSeance?.seance_time}</div>
           <div className={styles.hall_title__bold}>{selectedHall?.hall_name ? selectedHall?.hall_name.charAt(0).toUpperCase() + selectedHall?.hall_name.slice(1) : '-'}</div>
+          <div className={styles.hall_title_tap}>
+            <div className={styles.hall_title_tap_desc}>Тапните дважды,<br/> чтобы увеличить</div>
+            <img className={styles.hall_title_tap_hand} src={basePath + '/tap_hand.png'} />
+          </div>
         </div>
 
         <div className={styles.hall_schema_bg}>
