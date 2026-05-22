@@ -1,0 +1,145 @@
+.price_configuration_nav {
+ display: flex; 
+ column-gap: 4px;
+ margin-top: 12px;
+}
+
+.price_configuration_nav_button {
+  padding: 12px 20px;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.45);
+  border-radius: 3px;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 500;
+  
+}
+
+.price_configuration_nav_button:hover {
+  background-color: rgba(255, 255, 255, 0.65);
+}
+
+.price_configuration_nav_button:active {
+  background-color: rgba(255, 255, 255, 0.45);
+}
+
+.price_configuration_nav_button_current {
+  transform: scale(108%);
+  font-weight: 900;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.price_configuration_nav_button_current:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.price_configuration_container {
+  margin-top: 36px;
+}
+
+.price_configuration_rows_inputs {
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+  margin-top: 26px;
+}
+
+.price_configuration_rows_input_filed {
+  position: relative;
+}
+
+.price_configuration_rows_input_title {
+  position: absolute;
+  font-weight: 400;
+  font-size: 12px;
+  color: rgba(132, 132, 132, 1);
+  top: 0;
+  transform: translate(0, -104%);
+}
+
+.price_configuration_rows_input {
+  padding: 8px;
+  font-weight: 400;
+  color: rgba(117, 117, 117, 1);
+  border: 1px solid rgba(183, 183, 183, 1)
+}
+
+.price_configuration_seats_legend {
+  margin-top: 11px;
+  display: flex;
+  column-gap: 23px;
+  row-gap: 12px;
+  flex-wrap: wrap;
+}
+
+.price_configuration_seat_legend {
+  display: flex;
+  flex-wrap: nowrap;
+  column-gap: 6px;
+  align-items: center;
+}
+
+.price_configuration_seat_legend span {
+  color: rgba(132, 132, 132, 1);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.price_configuration_seat {
+  height: 20px;
+  width: 20px;
+  background-color: rgba(196, 196, 196, 1);
+  border: 1px solid rgba(57, 57, 57, 1);
+  border-radius: 4px;
+  cursor: pointer;  
+}
+
+.price_configuration_seat_vip {
+  background-color: rgba(176, 214, 216, 1);
+  border: 1px solid rgba(10, 130, 138, 1);
+  background-image: url('/admin/bg-vip-seat.png');
+}
+
+.price_configuration_seat_disabled {
+  background-color: rgba(234, 233, 235, 0);
+  border: 1px solid rgba(196, 196, 196, 1);
+}
+
+.price_configuration_seat_schema_container {
+  border: 1px solid rgba(0, 0, 0, 1);
+  margin-top: 11px;
+  margin-bottom: 26px;
+  box-sizing: border-box;
+  padding-top: 26px;
+  padding-bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 20px;
+}
+
+.price_configuration_seat_schema_screen {
+  font-size: 16px;
+  letter-spacing: 19px;
+}
+
+.price_configuration_seat_schema_seats {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+}
+
+.price_configuration_seat_schema_seats_row {
+  display: flex;
+  flex-wrap: nowrap;
+  column-gap: 4px;  
+}
+
+.price_configuration_buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 15px;
+}

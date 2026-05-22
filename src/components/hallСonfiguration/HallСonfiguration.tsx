@@ -7,7 +7,7 @@ import Button from '../../utils/button/Button.tsx'
 import styles from './HallСonfiguration.module.css'
 import stylesAdminForm from  '../../css/FormAdmin.module.css'
 
-interface HallHallСonfigurationProps {
+interface HallСonfigurationProps {
   halls: HallType[] | undefined
   setIsUpdateData: Dispatch<SetStateAction<boolean>>
 }
@@ -18,7 +18,7 @@ interface SeatProps {
   seatIndex: number
 }
 
-export default function HallСonfiguration({halls, setIsUpdateData}: HallHallСonfigurationProps) {
+export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfigurationProps) {
   const [isConfirmHall, setIsConfirmHall] = useState(false)
   const [currentHall, setCurrentHall] = useState<HallType | null>(null)
   const [rowsHall, setRowsHall] = useState(0)
