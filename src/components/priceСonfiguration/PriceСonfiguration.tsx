@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent, Dispatch, SetStateAction } from 'react'
 import type { HallType } from '../../types/types.ts'
-// import { getResponseFromForm } from '../../utils/response.ts'
+import { getResponseFromForm } from '../../utils/response.ts'
 import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
 import Button from '../../utils/button/Button.tsx'
 import styles from './PriceСonfiguration.module.css'
@@ -34,29 +34,28 @@ export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonf
 
   async function onConfirm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    // setIsLoading(true)
+    setIsLoading(true)
     
-    // const form = new FormData()
-    // form.set('rowCount', String(rowsHall))
-    // form.set('placeCount', String(placesHall))
-    // form.set('config', JSON.stringify(currentHall?.hall_config))
+    const form = new FormData()
+    form.set('priceStandart', String(priceStandart))
+    form.set('priceVip', String(priceVip))
 
-    // try {
-    //   const response = await getResponseFromForm(`/hall/${currentHall?.id}`, 'POST', form)
-    //   const data = await response.json()
+    try {
+      const response = await getResponseFromForm(`/price/${currentHall?.id}`, 'POST', form)
+      const data = await response.json()
 
-    //   if (data.success) {
-    //     setIsConfirmHall(false)
-    //     setIsUpdateData((current) => !current)
-    //   } else {
-    //     setIsСonfigurationHallError(true)
-    //   }
+      if (data.success) {
+        setIsConfirmPrice(false)
+        setIsUpdateData((current) => !current)
+      } else {
+        setIsСonfigurationPriceError(true)
+      }
       
-    // } catch(e) {
-    //   console.error(e)
-    // }
+    } catch(e) {
+      console.error(e)
+    }
     
-    // setIsLoading(false)
+    setIsLoading(false)
   }
 
   function onResetConfirm() {
