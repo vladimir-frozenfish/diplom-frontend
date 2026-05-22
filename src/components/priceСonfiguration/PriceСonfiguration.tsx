@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import type { FormEvent, Dispatch, SetStateAction } from 'react'
-import type { HallType, SeatType } from '../../types/types.ts'
+import type { HallType } from '../../types/types.ts'
 // import { getResponseFromForm } from '../../utils/response.ts'
 import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
-// import Button from '../../utils/button/Button.tsx'
+import Button from '../../utils/button/Button.tsx'
 import styles from './PriceСonfiguration.module.css'
-// import stylesAdminForm from  '../../css/FormAdmin.module.css'
+import stylesAdminForm from  '../../css/FormAdmin.module.css'
 
 interface PriceСonfigurationProps {
   halls: HallType[] | undefined
@@ -19,141 +19,50 @@ interface PriceСonfigurationProps {
 // }
 
 export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonfigurationProps) {
-  // const [isConfirmHall, setIsConfirmHall] = useState(false)
+  const [isConfirmPrice, setIsConfirmPrice] = useState(false)
   const [currentHall, setCurrentHall] = useState<HallType | null>(null)
-  // const [rowsHall, setRowsHall] = useState(0)
-  // const [placesHall, setPlacesHall] = useState(0)
+  const [priceStandart, setPriceStandart] = useState(0)
+  const [priceVip, setPriceVip] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
-  // const [isСonfigurationHalllError, setIsСonfigurationHallError] = useState(false)
+  const [isСonfigurationPriceError, setIsСonfigurationPriceError] = useState(false)
 
   function onClickHall(hall: HallType) {
     setCurrentHall(hall)
-    // setRowsHall(hall.hall_rows)
-    // setPlacesHall(hall.hall_places)
+    setPriceStandart(hall.hall_price_standart)
+    setPriceVip(hall.hall_price_vip)
   }
 
-  // function onClickSeat({seat, rowIndex, seatIndex}: SeatProps) {
-  //   let nextSeat: SeatType = 'standart'
-  //   switch (seat) {
-  //     case 'standart':
-  //       nextSeat = 'vip'
-  //       break
-  //     case 'vip':
-  //       nextSeat = 'disabled'
-  //       break
-  //     case 'disabled':
-  //       nextSeat = 'standart'
-  //       break
-  //   }
-
-  //   setCurrentHall((prevHall) => {
-  //     if (!prevHall) {return null}
-  //     else {
-  //       const tempHallConfig = prevHall.hall_config
-  //       tempHallConfig[rowIndex][seatIndex] = nextSeat
-  //       return {
-  //         ...prevHall, 
-  //         hall_config: tempHallConfig
-  //       }
-  //     }
-  //   })
-  // }
-
-  // function Seat({seat, rowIndex, seatIndex}: SeatProps) {
-  //   let seatStyle = styles.price_configuration_seat
-  //   if (seat == 'vip') seatStyle += ' ' + styles.price_configuration_seat_vip
-  //   if (seat == 'disabled') seatStyle += ' ' + styles.price_configuration_seat_disabled
+  async function onConfirm(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    // setIsLoading(true)
     
-  //   return (
-  //     <div className={seatStyle} onClick={() => onClickSeat({seat, rowIndex, seatIndex})}></div>
-  //   )
-  // }
+    // const form = new FormData()
+    // form.set('rowCount', String(rowsHall))
+    // form.set('placeCount', String(placesHall))
+    // form.set('config', JSON.stringify(currentHall?.hall_config))
 
-  // function onChangeRows(e: React.ChangeEvent<HTMLInputElement>) {
-  //   const currentRows = +e.currentTarget.value > 0 ? +e.currentTarget.value : 1
-  //   // уменьшаем или увеличиваем колиество рядов в зале
-  //   if (currentRows < rowsHall) {
-  //     setCurrentHall((prevHall) => {
-  //       if (!prevHall) return null
-  //       else {return {...prevHall, hall_config: prevHall.hall_config.slice(0, currentRows)}}
-  //     })
-  //   }
-  //   if (currentRows > rowsHall) {
-  //     setCurrentHall((prevHall) => {
-  //       if (!prevHall) return null
-  //       else {
-  //         const addRow = Array(placesHall).fill('standart')
-  //         const addRows = Array(currentRows - rowsHall).fill(addRow)
-  //         return {...prevHall, hall_config: [...prevHall.hall_config, ...addRows]}
-  //       }
-  //     })
-  //   }
-  //   setRowsHall(currentRows)
-  // }
+    // try {
+    //   const response = await getResponseFromForm(`/hall/${currentHall?.id}`, 'POST', form)
+    //   const data = await response.json()
 
-  // function onChangePlaces(e: React.ChangeEvent<HTMLInputElement>) {
-  //   const currentPlaces = +e.currentTarget.value > 0 ? +e.currentTarget.value : 1
-  //   // уменьшаем или увеличиваем колиество мест в каждом ряду в зале
-  //   if (currentPlaces < placesHall) {
-  //     setCurrentHall((prevHall) => {
-  //       if (!prevHall) return null
-  //       else {
-  //         const rows = []
-  //         for (const row of prevHall.hall_config) {
-  //           rows.push(row.slice(0, currentPlaces))
-  //         }
-  //         return {...prevHall, hall_config: rows}
-  //       }
-  //     })    
-  //   }
-  //   if (currentPlaces > placesHall) {
-  //     setCurrentHall((prevHall) => {
-  //       if (!prevHall) return null
-  //       else {
-  //         const addPlaces = Array(currentPlaces - placesHall).fill('standart')
-  //         const rows = []
-  //         for (const row of prevHall.hall_config) {
-  //           rows.push([...row, ...addPlaces])
-  //         }
-  //         return {...prevHall, hall_config: rows}
-  //       }
-  //     })
-  //   }
-    
-  //   setPlacesHall(currentPlaces)
-  // }
-
-  // async function onConfirm(e: FormEvent<HTMLFormElement>) {
-  //   e.preventDefault()
-  //   setIsLoading(true)
-    
-  //   const form = new FormData()
-  //   form.set('rowCount', String(rowsHall))
-  //   form.set('placeCount', String(placesHall))
-  //   form.set('config', JSON.stringify(currentHall?.hall_config))
-
-  //   try {
-  //     const response = await getResponseFromForm(`/hall/${currentHall?.id}`, 'POST', form)
-  //     const data = await response.json()
-
-  //     if (data.success) {
-  //       setIsConfirmHall(false)
-  //       setIsUpdateData((current) => !current)
-  //     } else {
-  //       setIsСonfigurationHallError(true)
-  //     }
+    //   if (data.success) {
+    //     setIsConfirmHall(false)
+    //     setIsUpdateData((current) => !current)
+    //   } else {
+    //     setIsСonfigurationHallError(true)
+    //   }
       
-  //   } catch(e) {
-  //     console.error(e)
-  //   }
+    // } catch(e) {
+    //   console.error(e)
+    // }
     
-  //   setIsLoading(false)
-  // }
+    // setIsLoading(false)
+  }
 
-  // function onResetConfirm() {
-  //   setIsConfirmHall(false)
-  //   setIsСonfigurationHallError(false)
-  // }
+  function onResetConfirm() {
+    setIsConfirmPrice(false)
+    setIsСonfigurationPriceError(false)
+  }
 
   return (
       <div>
@@ -172,88 +81,53 @@ export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonf
           ) : (<div>Залов не найдено</div>)}
         </div>
 
-        {/* <div className={styles.price_configuration_container}>
-          <div>Укажите количество рядов и максимальное количество кресел в ряду:</div>
-          <div className={styles.price_configuration_rows_inputs}>
-            <div className={styles.price_configuration_rows_input_filed}>
-              <div className={styles.price_configuration_rows_input_title}>Рядов, шт</div>
-              <input className={styles.price_configuration_rows_input} type='number' min={1} value={rowsHall} onChange={onChangeRows} onKeyDown={(e) => e.preventDefault()}></input>
+        <div className={styles.price_configuration_container}>
+          <div>Установите цены для типов кресел:</div>
+            <div className={styles.price_configuration_inputs}>
+              <div className={styles.price_configuration_input_filed}>
+                <div className={styles.price_configuration_input_title}>Цена, рублей</div>
+                <input className={styles.price_configuration_input} type='number' value={priceStandart} onChange={(e) => setPriceStandart(+e.currentTarget.value)}></input>
+              </div>
+              <div className={styles.price_configuration_legend}>
+                <div>за</div>
+                <div className={styles.price_configuration_seat}></div> 
+                <div>обычные кресла</div>
+              </div>
+
+              <div className={styles.price_configuration_input_filed}>
+                <div className={styles.price_configuration_input_title}>Цена, рублей</div>
+                <input className={styles.price_configuration_input + ' ' + styles.price_configuration_input_vip} type='number' value={priceVip} onChange={(e) => setPriceVip(+e.currentTarget.value)}></input>
+              </div>
+              <div className={styles.price_configuration_legend}>
+                <div>за</div>
+                <div className={styles.price_configuration_seat + ' ' + styles.price_configuration_seat_vip}></div>
+                <div>VIP кресла</div>
+              </div>
             </div>
-            <div>
-              <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8.74512 8.82422H6.71484L4.33301 5.45801L1.97754 8.82422H0L3.41895 4.39453L0.158203 0H2.11816L4.43848 3.39258L6.71484 0H8.60449L5.29102 4.42969L8.74512 8.82422Z" fill="#848484"/>
-              </svg>
-            </div>
-            <div className={styles.price_configuration_rows_input_filed}>
-              <div className={styles.price_configuration_rows_input_title}>Мест, шт</div>
-              <input className={styles.price_configuration_rows_input} type='number' min={1} value={placesHall} onChange={onChangePlaces} onKeyDown={(e) => e.preventDefault()}></input>
-            </div>            
-          </div>
-        </div> */}
+        </div>
 
-        {/* <div className={styles.price_configuration_container}>
-          <div>Теперь вы можете указать типы кресел на схеме зала:</div>
-          <div className={styles.price_configuration_seats_legend}>
-            <div className={styles.price_configuration_seat_legend}>
-              <div className={styles.price_configuration_seat}></div>
-              <span>&mdash;</span>
-              <span>обычные кресла</span>
-            </div>
-
-            <div className={styles.price_configuration_seat_legend}>
-              <div className={styles.price_configuration_seat + ' ' + styles.price_configuration_seat_vip}></div>
-              <span>&mdash;</span>
-              <span>VIP кресла</span>
-            </div>
-
-            <div className={styles.price_configuration_seat_legend}>
-              <div className={styles.price_configuration_seat + ' ' + styles.price_configuration_seat_disabled}></div>
-              <span>&mdash;</span>
-              <span>заблокированные (нет кресла)</span>
-            </div>
-          </div>
-
-          <div className={styles.price_configuration_seat_schema_container}>
-            <div className={styles.price_configuration_seat_schema_screen}>ЭКРАН</div>
-            
-            {currentHall 
-              ? 
-              <div className={styles.price_configuration_seat_schema_seats}>
-                {currentHall.hall_config.map((hallrow, rowIndex) => 
-                  <div key={rowIndex} className={styles.price_configuration_seat_schema_seats_row}>{hallrow.map((seat, seatIndex) => 
-                    <Seat key={seatIndex} seat={seat} rowIndex={rowIndex} seatIndex={seatIndex} />
-                  )}</div>
-                )}
-              </div>                  
-              :
-              <div>Выберите зал.</div>
-            }
-
-          </div>
-        </div> */}
-
-        {/* <div className={styles.price_configuration_buttons}>
+        <div className={styles.price_configuration_buttons}>
           <Button text='ОТМЕНА' isCancel={true} onClick={() => {if (currentHall) setIsUpdateData((current) => !current)}} />
-          <Button text='СОХРАНИТЬ' onClick={() => {if (currentHall) setIsConfirmHall(true)}} />
-        </div> */}
+          <Button text='СОХРАНИТЬ' onClick={() => {if (currentHall) setIsConfirmPrice(true)}} />
+        </div>
 
-        {/* {isConfirmHall && 
+        {isConfirmPrice && 
           <div className={stylesAdminForm.admin_form_modal}>
             <div className={stylesAdminForm.admin_form_container}>
-              <div className={stylesAdminForm.admin_form_header}>КОНФИГУРАЦИЯ ЗАЛА</div>
+              <div className={stylesAdminForm.admin_form_header}>КОНФИГУРАЦИЯ ЦЕН</div>
               <form className={stylesAdminForm.admin_form} onSubmit={onConfirm} onReset={onResetConfirm}>
-                <div className={stylesAdminForm.admin_form_caption}>Сохранить конфигурацию зала - <span>{currentHall?.hall_name}?</span></div>
+                <div className={stylesAdminForm.admin_form_caption}>Сохранить цены зала - <span>{currentHall?.hall_name}?</span></div>
 
                 <div className={stylesAdminForm.admin_form_buttons}>
                   <button type="submit" className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>СОХРАНИТЬ</button>
                   <button type="reset" className={stylesAdminForm.admin_form_button}>ОТМЕНИТЬ</button>
                 </div>
 
-                {isСonfigurationHalllError && <div className={stylesAdminForm.admin_form_error}>Не удалось сохранить зал.</div>}
+                {isСonfigurationPriceError && <div className={stylesAdminForm.admin_form_error}>Не удалось сохранить цены зала.</div>}
               </form>
             </div>
           </div>
-        }             */}
+        }            
 
         {isLoading && <LoadingModal />}
       </div>
