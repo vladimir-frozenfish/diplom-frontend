@@ -6,6 +6,7 @@ import UpDownContainer from "../../utils/upDownContainer/UpDownContainer.tsx"
 import Auth from "../auth/Auth"
 import HallManagement from "../hallManagement/HallManagement.tsx"
 import HallСonfiguration from "../hallСonfiguration/HallСonfiguration.tsx"
+import PriceСonfiguration from "../priceСonfiguration/PriceСonfiguration.tsx"
 import styles from './Admin.module.css'
 
 export default function Admin() {
@@ -65,7 +66,11 @@ export default function Admin() {
               
               <UpDownContainer description="КОНФИГУРАЦИЯ ЗАЛОВ">
                 <HallСonfiguration halls={allData?.result.halls} setIsUpdateData={setIsUpdateData}/>
-              </UpDownContainer>              
+              </UpDownContainer>
+
+              <UpDownContainer description="КОНФИГУРАЦИЯ ЦЕН">
+                <PriceСonfiguration halls={allData?.result.halls} setIsUpdateData={setIsUpdateData}/>
+              </UpDownContainer>
             </>
         }
         </div>
