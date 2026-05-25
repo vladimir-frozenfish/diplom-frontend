@@ -3,6 +3,7 @@ import type { FormEvent, Dispatch, SetStateAction } from 'react'
 import type { HallType, FilmType } from '../../types/types.ts'
 import { basePath } from '../../enum/enum.ts'
 import { getResponseFromForm, getResponse } from '../../utils/response.ts'
+import { generatePastelColor } from '../../utils/utils.ts'
 import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
 import Button from '../../utils/button/Button.tsx'
 import styles from './FilmManagement.module.css'
@@ -11,6 +12,10 @@ import stylesAdminForm from  '../../css/FormAdmin.module.css'
 interface FilmManagementProps {
   films: FilmType[] | undefined
   setIsUpdateData: Dispatch<SetStateAction<boolean>>
+}
+
+interface FilmProps {
+  film: FilmType
 }
 
 export default function FilmManagement({films, setIsUpdateData}: FilmManagementProps) {
@@ -77,6 +82,18 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
   //   setIsAddHallError(false)
   // }
 
+  function Film({film}: FilmProps) {
+    return (
+      <div className={styles.film_management_film} style={{backgroundColor: generatePastelColor()}}>
+        <img src={film.film_poster} className={styles.film_management_film_poster}/>
+        <div className={styles.film_management_description_container}>
+          <div className={styles.film_management_name}>{film.film_name}</div>
+          <div className={styles.film_management_duration}>{film.film_duration} минут</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
       <div>
         {/* <div>Доступные залы:</div>
@@ -95,6 +112,10 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
         
         <div className={styles.film_management_buttons}>
           <Button text='ДОБАВИТЬ ФИЛЬМ' onClick={() => {setIsAddFilm(true)}} />
+        </div>
+
+        <div className={styles.film_management_films}>
+          {films && films.length > 0 ? (films?.map((film, index) => <Film key={index} film={film} />)) : (<div>Фильмов не найдено</div>)}
         </div>
         
         {/* {isAddHall && 

@@ -2,11 +2,44 @@
   margin-top: 17px;
 }
 
+.film_management_films {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  column-gap: 15px;
+  row-gap: 15px;
+}
 
+.film_management_film {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  column-gap: 12px;
+  width: 259px;
+  height: 52px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
 
+.film_management_film_poster {
+  width: 38px;
+  height: 100%;
+}
 
+.film_management_description_container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+  font-size: 14px;
+}
 
+.film_management_name {
+  font-weight: 500;
+}
 
+.film_management_duration {
+  font-weight: 400;
+}
 
 
 /* .hall_management_halls {
