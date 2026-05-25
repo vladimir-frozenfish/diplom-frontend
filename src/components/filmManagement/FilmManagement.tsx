@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import type { FormEvent, Dispatch, SetStateAction } from 'react'
 import type { FilmType } from '../../types/types.ts'
-// import { basePath } from '../../enum/enum.ts'
+import { basePath } from '../../enum/enum.ts'
 import { getResponseFromForm, getResponse } from '../../utils/response.ts'
 import { generatePastelColor } from '../../utils/utils.ts'
 import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
@@ -20,10 +20,10 @@ interface FilmProps {
 
 export default function FilmManagement({films, setIsUpdateData}: FilmManagementProps) {
   const [isAddFilm, setIsAddFilm] = useState(false)
-  // const [deleteHall, setDeleteAddHall] = useState<HallType | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isAddFilmError, setIsAddFilmError] = useState(false)
-  // const [isDeleteHalllError, setIsDeleteHallError] = useState(false)
+  const [deleteFilm, setDeleteFilm] = useState<FilmType | null>(null)
+  const [isDeleteFilmError, setIsDeleteFilmError] = useState(false)
   const inputFileRef = useRef<HTMLInputElement>(null)
 
   function onPosterChange() {
@@ -63,32 +63,32 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
     setIsAddFilmError(false)
   }  
 
-  // async function onSubmitDelete(e: FormEvent<HTMLFormElement>) {
-  //   e.preventDefault()
-  //   setIsLoading(true)
+  async function onSubmitDelete(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setIsLoading(true)
     
-  //   try {
-  //     const response = await getResponse(`/hall/${deleteHall?.id}`, 'DELETE')
-  //     const data = await response.json()
+    try {
+      const response = await getResponse(`/film/${deleteFilm?.id}`, 'DELETE')
+      const data = await response.json()
 
-  //     if (data.success) {
-  //       setDeleteAddHall(null)
-  //       setIsUpdateData((current) => !current)
-  //     } else {
-  //       setIsDeleteHallError(true)
-  //     }
+      if (data.success) {
+        setDeleteFilm(null)
+        setIsUpdateData((current) => !current)
+      } else {
+        setIsDeleteFilmError(true)
+      }
       
-  //   } catch(e) {
-  //     console.error(e)
-  //   }
+    } catch(e) {
+      console.error(e)
+    }
     
-  //   setIsLoading(false)
-  // }
+    setIsLoading(false)
+  }
 
-  // function onResetDelete() {
-  //   setDeleteAddHall(null)
-  //   setIsDeleteHallError(false)
-  // }
+  function onResetDelete() {
+    setDeleteFilm(null)
+    setIsDeleteFilmError(false)
+  }
 
   function Film({film}: FilmProps) {
     return (
@@ -97,6 +97,10 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
         <div className={styles.film_management_description_container}>
           <div className={styles.film_management_name}>{film.film_name}</div>
           <div className={styles.film_management_duration}>{film.film_duration} минут</div>
+        </div>
+
+        <div className={styles.film_management_delete} onClick={() => setDeleteFilm(film)}>
+          <img src={basePath + '/delete.svg'} alt="Удалить" />
         </div>
       </div>
     )
@@ -156,23 +160,23 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
           </div>
         }
 
-        {/* {deleteHall && 
+        {deleteFilm && 
           <div className={stylesAdminForm.admin_form_modal}>
             <div className={stylesAdminForm.admin_form_container}>
-              <div className={stylesAdminForm.admin_form_header}>УДАЛЕНИЕ ЗАЛА</div>
+              <div className={stylesAdminForm.admin_form_header}>УДАЛЕНИЕ ФИЛЬМА</div>
               <form className={stylesAdminForm.admin_form} onSubmit={onSubmitDelete} onReset={onResetDelete}>
-                <div className={stylesAdminForm.admin_form_caption}>Вы хотите удалить зал - <span>{deleteHall.hall_name}?</span></div>
+                <div className={stylesAdminForm.admin_form_caption}>Вы хотите удалить фильм - <span>{deleteFilm.film_name}?</span></div>
 
                 <div className={stylesAdminForm.admin_form_buttons}>
-                  <button type="submit" className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>УДАЛИТЬ ЗАЛ</button>
+                  <button type="submit" className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>УДАЛИТЬ ФИЛЬМ</button>
                   <button type="reset" className={stylesAdminForm.admin_form_button}>ОТМЕНИТЬ</button>
                 </div>
 
-                {isDeleteHalllError && <div className={stylesAdminForm.admin_form_error}>Не удалось удалить зал.</div>}
+                {isDeleteFilmError && <div className={stylesAdminForm.admin_form_error}>Не удалось удалить фильм.</div>}
               </form>
             </div>
           </div>
-        } */}
+        }
 
         {isLoading && <LoadingModal />}
       </div>
