@@ -41,6 +41,19 @@
   font-weight: 400;
 }
 
+.film_management_poster_label {
+  position: relative;
+}
+
+.film_management_poster_input {
+  opacity: 1;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  user-select: none;
+  z-index: -1;
+}
+
 
 /* .hall_management_halls {
   list-style: none;

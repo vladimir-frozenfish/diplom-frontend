@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import type { FormEvent, Dispatch, SetStateAction } from 'react'
-import type { HallType, FilmType } from '../../types/types.ts'
-import { basePath } from '../../enum/enum.ts'
+import type { FilmType } from '../../types/types.ts'
+// import { basePath } from '../../enum/enum.ts'
 import { getResponseFromForm, getResponse } from '../../utils/response.ts'
 import { generatePastelColor } from '../../utils/utils.ts'
 import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
@@ -22,33 +22,46 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
   const [isAddFilm, setIsAddFilm] = useState(false)
   // const [deleteHall, setDeleteAddHall] = useState<HallType | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  // const [isAddHallError, setIsAddHallError] = useState(false)
+  const [isAddFilmError, setIsAddFilmError] = useState(false)
   // const [isDeleteHalllError, setIsDeleteHallError] = useState(false)
+  const inputFileRef = useRef<HTMLInputElement>(null)
 
-  // async function onSubmit(e: FormEvent<HTMLFormElement>) {
-  //   e.preventDefault()
+  function onPosterChange() {
+    const file = inputFileRef.current?.files?.[0];
+    if (file) {
+      console.log('Выбран файл:', file.name);
+    }
+  };
 
-  //   setIsLoading(true)
+  async function onSubmitAddFilm(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+
+    setIsLoading(true)
     
-  //   const form = new FormData(e.currentTarget)
+    const form = new FormData(e.currentTarget)
 
-  //   try {
-  //     const response = await getResponseFromForm('/hall', 'POST', form)
-  //     const data = await response.json()
+    try {
+      const response = await getResponseFromForm('/film', 'POST', form)
+      const data = await response.json()
 
-  //     if (data.success) {
-  //       setIsAddHall(false)
-  //       setIsUpdateData((current) => !current)
-  //     } else {
-  //       setIsAddHallError(true)
-  //     }
+      if (data.success) {
+        setIsAddFilm(false)
+        setIsUpdateData((current) => !current)
+      } else {
+        setIsAddFilmError(true)
+      }
       
-  //   } catch(e) {
-  //     console.error(e)
-  //   }
+    } catch(e) {
+      console.error(e)
+    }
     
-  //   setIsLoading(false)
-  // }
+    setIsLoading(false)
+  }
+
+  function onResetAddFilm() {
+    setIsAddFilm(false)
+    setIsAddFilmError(false)
+  }  
 
   // async function onSubmitDelete(e: FormEvent<HTMLFormElement>) {
   //   e.preventDefault()
@@ -77,11 +90,6 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
   //   setIsDeleteHallError(false)
   // }
 
-  // function onReset() {
-  //   setIsAddHall(false)
-  //   setIsAddHallError(false)
-  // }
-
   function Film({film}: FilmProps) {
     return (
       <div className={styles.film_management_film} style={{backgroundColor: generatePastelColor()}}>
@@ -96,20 +104,6 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
 
   return (
       <div>
-        {/* <div>Доступные залы:</div>
-        <ul className={styles.hall_management_halls}>
-          {halls && halls.length > 0 ? (
-            halls.map((hall, index) => (
-              <li key={index}>
-                <div>{hall.hall_name}</div>
-                <div className={styles.hall_management_delete} onClick={() => setDeleteAddHall(hall)}>
-                  <img src={basePath + '/delete.svg'} alt="Удалить" />
-                </div>
-              </li>
-            ))
-          ) : (<li>Залов не найдено</li>)}
-        </ul> */}
-        
         <div className={styles.film_management_buttons}>
           <Button text='ДОБАВИТЬ ФИЛЬМ' onClick={() => {setIsAddFilm(true)}} />
         </div>
@@ -118,26 +112,49 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
           {films && films.length > 0 ? (films?.map((film, index) => <Film key={index} film={film} />)) : (<div>Фильмов не найдено</div>)}
         </div>
         
-        {/* {isAddHall && 
+        {isAddFilm && 
           <div className={stylesAdminForm.admin_form_modal}>
-            <div className={stylesAdminForm.admin_form_container}>
-              <div className={stylesAdminForm.admin_form_header}>ДОБАВЛЕНИЕ ЗАЛА</div>
-              <form className={stylesAdminForm.admin_form} onSubmit={onSubmit} onReset={onReset}>
+            <div className={stylesAdminForm.admin_form_container + ' ' + stylesAdminForm.admin_form_container_wide}>
+              <div className={stylesAdminForm.admin_form_header}>ДОБАВЛЕНИЕ ФИЛЬМА</div>
+              <form id='addFilmForm' className={stylesAdminForm.admin_form} onSubmit={onSubmitAddFilm} onReset={onResetAddFilm}>
+
                 <div  className={stylesAdminForm.admin_form_fields}>
-                  <div className={stylesAdminForm.admin_form_description}>Название зала</div>
-                  <input placeholder='Зал 1' name='hallName' className={stylesAdminForm.admin_form_input + ' ' + styles.hall_management_add_hall_input} required/>
-                </div>
+                  <div>
+                    <div className={stylesAdminForm.admin_form_description}>Название фильма</div>
+                    <input placeholder='Например, «Гражданин Кейн»' name='filmName' className={stylesAdminForm.admin_form_input} required/>
+                  </div>
+
+                  <div>
+                    <div className={stylesAdminForm.admin_form_description}>Продолжительность фильма (мин.)</div>
+                    <input name='filmDuration' className={stylesAdminForm.admin_form_input} type='number' required/>
+                  </div>
+
+                  <div>
+                    <div className={stylesAdminForm.admin_form_description}>Описание фильма</div>
+                    <textarea name='filmDescription' className={stylesAdminForm.admin_form_input + ' ' + stylesAdminForm.admin_form_textarea} rows={3} required/>
+                  </div>
+                  
+                  <div>
+                    <div className={stylesAdminForm.admin_form_description}>Страна</div>
+                    <input name='filmOrigin' className={stylesAdminForm.admin_form_input} required/>
+                  </div>                                    
+
+                </div>                
 
                 <div className={stylesAdminForm.admin_form_buttons}>
-                  <button type="submit" className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>ДОБАВИТЬ ЗАЛ</button>
+                  <button type="submit" className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>ДОБАВИТЬ ФИЛЬМ</button>
+                  <label htmlFor='filePoster' className={styles.film_management_poster_label}>
+                    <button type='button' onClick={() => {if (inputFileRef.current) inputFileRef.current.click()}} className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>ЗАГРУЗИТЬ ПОСТЕР</button>
+                    <input form='addFilmForm' className={styles.film_management_poster_input} ref={inputFileRef} onChange={onPosterChange} id='filePoster' name='filePoster' type='file' required/>
+                  </label>
                   <button type="reset" className={stylesAdminForm.admin_form_button}>ОТМЕНИТЬ</button>
                 </div>
 
-                {isAddHallError && <div className={stylesAdminForm.admin_form_error}>Не удалось добавить зал.</div>}
+                {isAddFilmError && <div className={stylesAdminForm.admin_form_error}>Не удалось добавить фильм.</div>}
               </form>
             </div>
           </div>
-        } */}
+        }
 
         {/* {deleteHall && 
           <div className={stylesAdminForm.admin_form_modal}>

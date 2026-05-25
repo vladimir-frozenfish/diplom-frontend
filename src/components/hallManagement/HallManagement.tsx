@@ -102,8 +102,10 @@ export default function HallManagement({halls, setIsUpdateData}: HallManagementP
               <div className={stylesAdminForm.admin_form_header}>ДОБАВЛЕНИЕ ЗАЛА</div>
               <form className={stylesAdminForm.admin_form} onSubmit={onSubmit} onReset={onReset}>
                 <div  className={stylesAdminForm.admin_form_fields}>
-                  <div className={stylesAdminForm.admin_form_description}>Название зала</div>
-                  <input placeholder='Зал 1' name='hallName' className={stylesAdminForm.admin_form_input + ' ' + styles.hall_management_add_hall_input} required/>
+                  <div>
+                    <div className={stylesAdminForm.admin_form_description}>Название зала</div>
+                    <input placeholder='Зал 1' name='hallName' className={stylesAdminForm.admin_form_input + ' ' + styles.hall_management_add_hall_input} required/>
+                  </div>
                 </div>
 
                 <div className={stylesAdminForm.admin_form_buttons}>
