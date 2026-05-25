@@ -19,6 +19,8 @@
   width: 259px;
   height: 52px;
   border: 1px solid rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  background-color: rgba(202, 255, 133, 1);
 }
 
 .film_management_film_poster {
@@ -78,55 +80,58 @@
   background-color: white;
 }
 
-
-/* .hall_management_halls {
-  list-style: none;
-  padding: 14px 0 22px 11px;
-  display: grid;
-  grid-template-columns: max-content;
-  row-gap: 10px;
-}
-
-.hall_management_halls li {
-  position: relative;
-  padding-left: 1em;
-  text-transform: uppercase;
-  font-weight: bold;
+.film_management_halls {
+  margin: 51px 71px 0 35px;
   display: flex;
-  justify-content: space-between;
-  column-gap: 4px;
+  flex-direction: column;
+  row-gap: 35px;
 }
 
-.hall_management_halls li::before {
-  content: "-";
-  position: absolute;
-  left: 0;
-  margin-left: 0;
-  color: inherit;
+.film_management_hall_name {
+  font-weight: 500;
+  text-transform: uppercase;
 }
 
-.hall_management_delete {
-  background-color: white;
-  width: 20px;
-  height: 20px;
+.film_management_hall_time {
+  border: 1px solid rgba(132, 132, 132, 1);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.film_management_hall_seance {
+  position: relative;
+  width: 72px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 3px;
-  cursor: pointer;
+  background-color: rgba(133, 255, 137, 1);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  font-size: 10px;
 }
 
-.hall_management_delete:hover {
-  background-color: rgb(203, 203, 203);
+.film_management_hall_seance_time {
+  position: absolute;
+  left: 0;
+  bottom: -32px;
+  font-size: 12px;
+  color: rgba(132, 132, 132, 1);
+  transform: translate(-50%, 0);
 }
 
-.hall_management_delete:active {
-  background-color: white;
+.film_management_hall_seance_time_line {
+  position: absolute;
+  left: 0;
+  bottom: -15px;
+  width: 1px;  
+  height: 5px;
+  background-color: rgba(132, 132, 132, 1);
 }
 
 @media (max-width: 391px) {
-  .hall_management_buttons {
-    display: flex;
-    justify-content: center;
+  .film_management_halls {
+    margin: 36px 0 0;
   }
-} */
+}

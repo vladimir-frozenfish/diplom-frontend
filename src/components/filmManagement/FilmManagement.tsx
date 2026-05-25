@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import type { FormEvent, Dispatch, SetStateAction } from 'react'
-import type { FilmType } from '../../types/types.ts'
+import type { FilmType, HallType, SeanceType } from '../../types/types.ts'
 import { basePath } from '../../enum/enum.ts'
 import { getResponseFromForm, getResponse } from '../../utils/response.ts'
 import { generatePastelColor } from '../../utils/utils.ts'
@@ -11,6 +11,8 @@ import stylesAdminForm from  '../../css/FormAdmin.module.css'
 
 interface FilmManagementProps {
   films: FilmType[] | undefined
+  halls: HallType[] | undefined
+  seances: SeanceType[] | undefined
   setIsUpdateData: Dispatch<SetStateAction<boolean>>
 }
 
@@ -18,12 +20,24 @@ interface FilmProps {
   film: FilmType
 }
 
-export default function FilmManagement({films, setIsUpdateData}: FilmManagementProps) {
+interface HallProps {
+  hall: HallType
+}
+
+interface SeanceProps {
+  seance: SeanceType
+}
+
+export default function FilmManagement({films, halls, seances, setIsUpdateData}: FilmManagementProps) {
   const [isAddFilm, setIsAddFilm] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [isAddFilmError, setIsAddFilmError] = useState(false)
   const [deleteFilm, setDeleteFilm] = useState<FilmType | null>(null)
   const [isDeleteFilmError, setIsDeleteFilmError] = useState(false)
+  const [isAddSeance, setIsAddSeance] = useState(false)
+  const [isAddSeanceError, setIsAddSeanceError] = useState(false)
+  const [selectedFilm, setSelectedFilm] = useState<FilmType | null>(null)
+  const [selectedHall, setSelectedHall] = useState<HallType | null>(null)
+  const [isLoading, setIsLoading] = useState(false)  
   const inputFileRef = useRef<HTMLInputElement>(null)
 
   function onPosterChange() {
@@ -90,9 +104,51 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
     setIsDeleteFilmError(false)
   }
 
+  async function onSubmitAddSeance(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+
+    setIsLoading(true)
+    
+    const form = new FormData(e.currentTarget)
+    form.append('seanceHallid', String(selectedHall?.id))
+    form.append('seanceFilmid', String(selectedFilm?.id))
+
+    try {
+      const response = await getResponseFromForm('/seance', 'POST', form)
+      const data = await response.json()
+
+      if (data.success) {
+        setIsAddSeance(false)
+        setSelectedFilm(null)
+        setSelectedHall(null)        
+        setIsUpdateData((current) => !current)
+      } else {
+        setIsAddSeanceError(true)
+      }
+      
+    } catch(e) {
+      console.error(e)
+    }
+    
+    setIsLoading(false)
+  }
+
+  function onResetAddSeance() {
+    setIsAddSeance(false)
+    setSelectedFilm(null)
+    setSelectedHall(null)
+    setIsAddSeanceError(false)
+  }  
+
+
   function Film({film}: FilmProps) {
     return (
-      <div className={styles.film_management_film} style={{backgroundColor: generatePastelColor()}}>
+      <div 
+        className={styles.film_management_film} 
+        // style={{backgroundColor: generatePastelColor()}}
+        draggable
+        onDrag={() => setSelectedFilm(film)}
+      >
         <img src={film.film_poster} className={styles.film_management_film_poster}/>
         <div className={styles.film_management_description_container}>
           <div className={styles.film_management_name}>{film.film_name}</div>
@@ -106,6 +162,38 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
     )
   }
 
+  function Seance({seance}: SeanceProps) {
+    return (
+      <div className={styles.film_management_hall_seance}>
+        <span>{films?.find(film => film.id === seance.seance_filmid)?.film_name}</span>
+        <div className={styles.film_management_hall_seance_time}>{seance.seance_time}</div>
+        <div className={styles.film_management_hall_seance_time_line}></div>
+      </div>  
+    )
+  }
+
+  function Hall({hall}: HallProps) {
+    function onDragOver(e: React.DragEvent<HTMLDivElement>) {
+      e.preventDefault()
+      e.dataTransfer.dropEffect = 'copy'
+    }
+
+    function onDrop(e: React.DragEvent<HTMLDivElement>) {
+      e.preventDefault()
+      setSelectedHall(hall)
+      setIsAddSeance(true)
+    }
+    
+    return (
+      <div onDragOver={onDragOver} onDrop={onDrop}>
+        <div className={styles.film_management_hall_name}>{hall.hall_name}</div>
+        <div className={styles.film_management_hall_time}>
+          {seances?.filter(value => value.seance_hallid === hall.id).sort((a, b) => a.seance_time.localeCompare(b.seance_time)).map((seance, index) => <Seance key={index} seance={seance}/>)}
+        </div>
+      </div>
+    )
+  }
+
   return (
       <div>
         <div className={styles.film_management_buttons}>
@@ -114,6 +202,10 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
 
         <div className={styles.film_management_films}>
           {films && films.length > 0 ? (films?.map((film, index) => <Film key={index} film={film} />)) : (<div>Фильмов не найдено</div>)}
+        </div>
+
+        <div className={styles.film_management_halls}>
+          {halls && halls.length > 0 ? (halls?.map((hall, index) => <Hall key={index} hall={hall} />)) : (<div>Залов не найдено</div>)}          
         </div>
         
         {isAddFilm && 
@@ -173,6 +265,34 @@ export default function FilmManagement({films, setIsUpdateData}: FilmManagementP
                 </div>
 
                 {isDeleteFilmError && <div className={stylesAdminForm.admin_form_error}>Не удалось удалить фильм.</div>}
+              </form>
+            </div>
+          </div>
+        }
+
+        {isAddSeance && 
+          <div className={stylesAdminForm.admin_form_modal}>
+            <div className={stylesAdminForm.admin_form_container + ' ' + stylesAdminForm.admin_form_container_wide}>
+              <div className={stylesAdminForm.admin_form_header}>ДОБАВЛЕНИЕ СЕАНСА</div>
+              <form className={stylesAdminForm.admin_form} onSubmit={onSubmitAddSeance} onReset={onResetAddSeance}>
+
+                <div  className={stylesAdminForm.admin_form_fields}>
+                  <div>Фильм: {selectedFilm?.film_name}</div>
+                  <div>Кинозал: {selectedHall?.hall_name}</div>
+
+                  <div>
+                    <div className={stylesAdminForm.admin_form_description}>Время начала</div>
+                    <input type='time' placeholder='15:00' name='seanceTime' className={stylesAdminForm.admin_form_input} required/>
+                  </div>                                    
+
+                </div>                
+
+                <div className={stylesAdminForm.admin_form_buttons}>
+                  <button type="submit" className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>ДОБАВИТЬ СЕАНС</button>
+                  <button type="reset" className={stylesAdminForm.admin_form_button}>ОТМЕНИТЬ</button>
+                </div>
+
+                {isAddSeanceError && <div className={stylesAdminForm.admin_form_error}>Не удалось добавить сеанс.</div>}
               </form>
             </div>
           </div>

@@ -74,7 +74,7 @@ export default function Admin() {
               </UpDownContainer>
 
               <UpDownContainer description="СЕТКА СЕАНСОВ">
-                <FilmManagement films={allData?.result.films} setIsUpdateData={setIsUpdateData}/>
+                <FilmManagement films={allData?.result.films} halls={allData?.result.halls} seances={allData?.result.seances} setIsUpdateData={setIsUpdateData}/>
               </UpDownContainer>              
             </>
         }
