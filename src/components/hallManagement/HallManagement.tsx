@@ -15,7 +15,7 @@ interface HallManagementProps {
 
 export default function HallManagement({halls, setIsUpdateData}: HallManagementProps) {
   const [isAddHall, setIsAddHall] = useState(false)
-  const [deleteHall, setDeleteAddHall] = useState<HallType | null>(null)
+  const [deleteHall, setDeleteHall] = useState<HallType | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isAddHallError, setIsAddHallError] = useState(false)
   const [isDeleteHalllError, setIsDeleteHallError] = useState(false)
@@ -54,7 +54,7 @@ export default function HallManagement({halls, setIsUpdateData}: HallManagementP
       const data = await response.json()
 
       if (data.success) {
-        setDeleteAddHall(null)
+        setDeleteHall(null)
         setIsUpdateData((current) => !current)
       } else {
         setIsDeleteHallError(true)
@@ -68,7 +68,7 @@ export default function HallManagement({halls, setIsUpdateData}: HallManagementP
   }
 
   function onResetDelete() {
-    setDeleteAddHall(null)
+    setDeleteHall(null)
     setIsDeleteHallError(false)
   }
 
@@ -85,7 +85,7 @@ export default function HallManagement({halls, setIsUpdateData}: HallManagementP
             halls.map((hall, index) => (
               <li key={index}>
                 <div>{hall.hall_name}</div>
-                <div className={styles.hall_management_delete} onClick={() => setDeleteAddHall(hall)}>
+                <div className={styles.hall_management_delete} onClick={() => setDeleteHall(hall)}>
                   <img src={basePath + '/delete.svg'} alt="Удалить" />
                 </div>
               </li>
@@ -102,8 +102,10 @@ export default function HallManagement({halls, setIsUpdateData}: HallManagementP
               <div className={stylesAdminForm.admin_form_header}>ДОБАВЛЕНИЕ ЗАЛА</div>
               <form className={stylesAdminForm.admin_form} onSubmit={onSubmit} onReset={onReset}>
                 <div  className={stylesAdminForm.admin_form_fields}>
-                  <div className={stylesAdminForm.admin_form_description}>Название зала</div>
-                  <input placeholder='Зал 1' name='hallName' className={stylesAdminForm.admin_form_input + ' ' + styles.hall_management_add_hall_input} required/>
+                  <div>
+                    <div className={stylesAdminForm.admin_form_description}>Название зала</div>
+                    <input placeholder='Зал 1' name='hallName' className={stylesAdminForm.admin_form_input + ' ' + styles.hall_management_add_hall_input} required/>
+                  </div>
                 </div>
 
                 <div className={stylesAdminForm.admin_form_buttons}>
