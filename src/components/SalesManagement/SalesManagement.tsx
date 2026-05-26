@@ -15,48 +15,44 @@ interface SalesManagementProps {
 export default function SalesManagement({halls, setIsUpdateData}: SalesManagementProps) {
   const [isConfirmSales, setIsConfirmSales] = useState(false)
   const [currentHall, setCurrentHall] = useState<HallType | null>(null)
-  // const [priceStandart, setPriceStandart] = useState(0)
-  // const [priceVip, setPriceVip] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
-  // const [isСonfigurationPriceError, setIsСonfigurationPriceError] = useState(false)
+  const [isSalesError, setIsSalesError] = useState(false)
 
   function onClickHall(hall: HallType) {
     setCurrentHall(hall)
     console.log(hall.hall_open)
-    // setPriceStandart(hall.hall_sales_standart)
-    // setPriceVip(hall.hall_sales_vip)
   }
 
-  // async function onConfirm(e: FormEvent<HTMLFormElement>) {
-  //   e.preventDefault()
-  //   setIsLoading(true)
+  async function onConfirm(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setIsLoading(true)
     
-  //   const form = new FormData()
-  //   form.set('priceStandart', String(priceStandart))
-  //   form.set('priceVip', String(priceVip))
+    const form = new FormData()
+    form.set('hallOpen', currentHall?.hall_open ? '0' : '1')
+    // form.set('priceVip', String(priceVip))
 
-  //   try {
-  //     const response = await getResponseFromForm(`/price/${currentHall?.id}`, 'POST', form)
-  //     const data = await response.json()
+    try {
+      const response = await getResponseFromForm(`/open/${currentHall?.id}`, 'POST', form)
+      const data = await response.json()
 
-  //     if (data.success) {
-  //       setIsConfirmPrice(false)
-  //       setIsUpdateData((current) => !current)
-  //     } else {
-  //       setIsСonfigurationPriceError(true)
-  //     }
+      if (data.success) {
+        setIsConfirmSales(false)
+        setIsUpdateData((current) => !current)
+      } else {
+        setIsSalesError(true)
+      }
       
-  //   } catch(e) {
-  //     console.error(e)
-  //   }
+    } catch(e) {
+      console.error(e)
+    }
     
-  //   setIsLoading(false)
-  // }
+    setIsLoading(false)
+  }
 
-  // function onResetConfirm() {
-  //   setIsConfirmPrice(false)
-  //   setIsСonfigurationPriceError(false)
-  // }
+  function onResetConfirm() {
+    setIsConfirmSales(false)
+    setIsSalesError(false)
+  }
 
   return (
       <div>
@@ -77,52 +73,27 @@ export default function SalesManagement({halls, setIsUpdateData}: SalesManagemen
 
         <div className={styles.sales_configuration_title}>{!currentHall?.hall_open ? 'Всё готово к открытию' : 'Можно закрыть зал'}</div>
 
-        {/* <div className={styles.sales_configuration_container}>
-          <div>Установите цены для типов кресел:</div>
-            <div className={styles.sales_configuration_inputs}>
-              <div className={styles.sales_configuration_input_filed}>
-                <div className={styles.sales_configuration_input_title}>Цена, рублей</div>
-                <input className={styles.sales_configuration_input} type='number' value={priceStandart} onChange={(e) => setPriceStandart(+e.currentTarget.value)}></input>
-              </div>
-              <div className={styles.sales_configuration_legend}>
-                <div>за</div>
-                <div className={styles.sales_configuration_seat}></div> 
-                <div>обычные кресла</div>
-              </div>
-
-              <div className={styles.sales_configuration_input_filed}>
-                <div className={styles.sales_configuration_input_title}>Цена, рублей</div>
-                <input className={styles.sales_configuration_input + ' ' + styles.sales_configuration_input_vip} type='number' value={priceVip} onChange={(e) => setPriceVip(+e.currentTarget.value)}></input>
-              </div>
-              <div className={styles.sales_configuration_legend}>
-                <div>за</div>
-                <div className={styles.sales_configuration_seat + ' ' + styles.sales_configuration_seat_vip}></div>
-                <div>VIP кресла</div>
-              </div>
-            </div>
-        </div> */}
-
         <div className={styles.sales_configuration_buttons}>
           <Button text={!currentHall?.hall_open ? 'ОТКРЫТЬ ПРОДАЖУ БИЛЕТОВ' : 'ЗАКРЫТЬ ПРОДАЖУ БИЛЕТОВ'} onClick={() => {if (currentHall) setIsConfirmSales(true)}} />
         </div>
 
-        {/* {isConfirmPrice && 
+        {isConfirmSales && 
           <div className={stylesAdminForm.admin_form_modal}>
             <div className={stylesAdminForm.admin_form_container}>
-              <div className={stylesAdminForm.admin_form_header}>КОНФИГУРАЦИЯ ЦЕН</div>
+              <div className={stylesAdminForm.admin_form_header}>{!currentHall?.hall_open ? 'ОТКРЫТЬ ПРОДАЖУ БИЛЕТОВ' : 'ЗАКРЫТЬ ПРОДАЖУ БИЛЕТОВ'}</div>
               <form className={stylesAdminForm.admin_form} onSubmit={onConfirm} onReset={onResetConfirm}>
-                <div className={stylesAdminForm.admin_form_caption}>Сохранить цены зала - <span>{currentHall?.hall_name}?</span></div>
+                <div className={stylesAdminForm.admin_form_caption}>{!currentHall?.hall_open ? 'Открыть продажу билетов' : 'Закрыть продажу билетов'} в зале <span>{currentHall?.hall_name}</span></div>
 
                 <div className={stylesAdminForm.admin_form_buttons}>
-                  <button type="submit" className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>СОХРАНИТЬ</button>
+                  <button type="submit" className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>{!currentHall?.hall_open ? 'ОТКРЫТЬ' : 'ЗАКРЫТЬ'}</button>
                   <button type="reset" className={stylesAdminForm.admin_form_button}>ОТМЕНИТЬ</button>
                 </div>
 
-                {isСonfigurationPriceError && <div className={stylesAdminForm.admin_form_error}>Не удалось сохранить цены зала.</div>}
+                {isSalesError && <div className={stylesAdminForm.admin_form_error}>Ошибка при открытии / закрытии продаж.</div>}
               </form>
             </div>
           </div>
-        }             */}
+        }            
 
         {isLoading && <LoadingModal />}
       </div>
