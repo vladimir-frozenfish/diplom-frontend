@@ -37,6 +37,9 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
   const [isAddSeanceError, setIsAddSeanceError] = useState(false)
   const [selectedFilm, setSelectedFilm] = useState<FilmType | null>(null)
   const [selectedHall, setSelectedHall] = useState<HallType | null>(null)
+  const [selectedSeance, setSelectedSeance] = useState<SeanceType | null>(null)
+  const [deleteSeance, setDeleteSeance] = useState<SeanceType | null>(null)
+  const [isDeleteSeanceError, setIsDeleteSeanceError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)  
   const inputFileRef = useRef<HTMLInputElement>(null)
 
@@ -149,6 +152,33 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
     setIsAddSeanceError(false)
   }  
 
+  async function onSubmitDeleteSeance(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setIsLoading(true)
+    
+    try {
+      const response = await getResponse(`/seance/${deleteSeance?.id}`, 'DELETE')
+      const data = await response.json()
+
+      if (data.success) {
+        setDeleteSeance(null)
+        setIsUpdateData((current) => !current)
+      } else {
+        setIsDeleteSeanceError(true)
+      }
+      
+    } catch(e) {
+      console.error(e)
+    }
+    
+    setIsLoading(false)
+  }
+
+  function onResetDeleteSeance() {
+    setDeleteSeance(null)
+    setIsDeleteSeanceError(false)
+  }
+
 
   function Film({film}: FilmProps) {
     return (
@@ -173,9 +203,14 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
 
   function Seance({seance}: SeanceProps) {
     const film = films?.find(film => film.id === seance.seance_filmid)
-    
+
     return (
-      <div className={styles.film_management_hall_seance} style={{backgroundColor: film?.id ? filmsBackground[film.id] : ''}}>
+      <div 
+        className={styles.film_management_hall_seance} 
+        style={{backgroundColor: film?.id ? filmsBackground[film.id] : ''}}
+        draggable
+        onDrag={() => setSelectedSeance(seance)}
+      >
         <span>{film?.film_name}</span>
         <div className={styles.film_management_hall_seance_time}>{seance.seance_time}</div>
         <div className={styles.film_management_hall_seance_time_line}></div>
@@ -191,8 +226,10 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
 
     function onDrop(e: React.DragEvent<HTMLDivElement>) {
       e.preventDefault()
-      setSelectedHall(hall)
-      setIsAddSeance(true)
+      if (selectedFilm) {
+        setSelectedHall(hall)
+        setIsAddSeance(true)
+      }
     }
     
     return (
@@ -204,9 +241,22 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
       </div>
     )
   }
+  
+  function onDragOverOnFilmContainer(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+  }
+
+  function onDropOnFilmContainer(e: React.DragEvent<HTMLDivElement>) {
+      e.preventDefault()
+      if (selectedSeance) {
+        setDeleteSeance(selectedSeance)
+        setSelectedSeance(null)
+      }
+    }
 
   return (
-      <div>
+      <div onDrop={onDropOnFilmContainer} onDragOver={onDragOverOnFilmContainer}>
         <div className={styles.film_management_buttons}>
           <Button text='ДОБАВИТЬ ФИЛЬМ' onClick={() => {setIsAddFilm(true)}} />
         </div>
@@ -304,6 +354,24 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
                 </div>
 
                 {isAddSeanceError && <div className={stylesAdminForm.admin_form_error}>Не удалось добавить сеанс.</div>}
+              </form>
+            </div>
+          </div>
+        }
+
+        {deleteSeance && 
+          <div className={stylesAdminForm.admin_form_modal}>
+            <div className={stylesAdminForm.admin_form_container}>
+              <div className={stylesAdminForm.admin_form_header}>УДАЛЕНИЕ СЕАНСА</div>
+              <form className={stylesAdminForm.admin_form} onSubmit={onSubmitDeleteSeance} onReset={onResetDeleteSeance}>
+                <div className={stylesAdminForm.admin_form_caption}>Вы хотите удалить сеанс?</div>
+
+                <div className={stylesAdminForm.admin_form_buttons}>
+                  <button type="submit" className={stylesAdminForm.admin_form_button + ' ' + stylesAdminForm.admin_form_button_submit}>УДАЛИТЬ СЕАНС</button>
+                  <button type="reset" className={stylesAdminForm.admin_form_button}>ОТМЕНИТЬ</button>
+                </div>
+
+                {isDeleteSeanceError && <div className={stylesAdminForm.admin_form_error}>Не удалось удалить сеанс.</div>}
               </form>
             </div>
           </div>
