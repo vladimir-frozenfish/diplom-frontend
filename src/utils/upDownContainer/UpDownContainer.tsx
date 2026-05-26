@@ -32,7 +32,7 @@ export default function UpDownContainer({ children, description = '-------', isM
       </div>
       
       <div className={isMinimizedContainer ? styles.updown_display_none : styles.updown_children_container}>
-        <div className={styles.updown_children_line}></div>
+        {!isLast && <div className={styles.updown_children_line}></div>}
         {children}
       </div>
     </>

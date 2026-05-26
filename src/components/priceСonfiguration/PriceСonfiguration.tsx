@@ -12,12 +12,6 @@ interface PriceСonfigurationProps {
   setIsUpdateData: Dispatch<SetStateAction<boolean>>
 }
 
-// interface SeatProps {
-//   seat: SeatType
-//   rowIndex: number
-//   seatIndex: number
-// }
-
 export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonfigurationProps) {
   const [isConfirmPrice, setIsConfirmPrice] = useState(false)
   const [currentHall, setCurrentHall] = useState<HallType | null>(null)
