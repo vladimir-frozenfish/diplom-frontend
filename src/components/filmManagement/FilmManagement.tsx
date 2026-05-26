@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import type { FormEvent, Dispatch, SetStateAction } from 'react'
 import type { FilmType, HallType, SeanceType } from '../../types/types.ts'
 import { basePath } from '../../enum/enum.ts'
@@ -39,6 +39,15 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
   const [selectedHall, setSelectedHall] = useState<HallType | null>(null)
   const [isLoading, setIsLoading] = useState(false)  
   const inputFileRef = useRef<HTMLInputElement>(null)
+
+  const filmsBackground = useMemo<Record<number, string>>(() => {
+    if (!films) return {}
+    const backgroundMap: Record<number, string> = {}
+    for (const film of films) {
+      backgroundMap[film.id] = generatePastelColor()
+    }
+    return backgroundMap
+  }, [films])
 
   function onPosterChange() {
     const file = inputFileRef.current?.files?.[0];
@@ -145,7 +154,7 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
     return (
       <div 
         className={styles.film_management_film} 
-        // style={{backgroundColor: generatePastelColor()}}
+        style={{backgroundColor: filmsBackground[film.id]}}
         draggable
         onDrag={() => setSelectedFilm(film)}
       >
@@ -163,9 +172,11 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
   }
 
   function Seance({seance}: SeanceProps) {
+    const film = films?.find(film => film.id === seance.seance_filmid)
+    
     return (
-      <div className={styles.film_management_hall_seance}>
-        <span>{films?.find(film => film.id === seance.seance_filmid)?.film_name}</span>
+      <div className={styles.film_management_hall_seance} style={{backgroundColor: film?.id ? filmsBackground[film.id] : ''}}>
+        <span>{film?.film_name}</span>
         <div className={styles.film_management_hall_seance_time}>{seance.seance_time}</div>
         <div className={styles.film_management_hall_seance_time_line}></div>
       </div>  
