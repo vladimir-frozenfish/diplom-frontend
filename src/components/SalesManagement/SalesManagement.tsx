@@ -29,7 +29,6 @@ export default function SalesManagement({halls, setIsUpdateData}: SalesManagemen
     
     const form = new FormData()
     form.set('hallOpen', currentHall?.hall_open ? '0' : '1')
-    // form.set('priceVip', String(priceVip))
 
     try {
       const response = await getResponseFromForm(`/open/${currentHall?.id}`, 'POST', form)
