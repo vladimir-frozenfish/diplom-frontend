@@ -204,10 +204,13 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
   function Seance({seance}: SeanceProps) {
     const film = films?.find(film => film.id === seance.seance_filmid)
 
+    const time = seance.seance_time.split(':')
+    const timePercent = (+time[0] * 60 + +time[1]) / 14.4
+
     return (
       <div 
         className={styles.film_management_hall_seance} 
-        style={{backgroundColor: film?.id ? filmsBackground[film.id] : ''}}
+        style={{backgroundColor: film?.id ? filmsBackground[film.id] : '', left: `${timePercent}%`}}
         draggable
         onDrag={() => setSelectedSeance(seance)}
       >
