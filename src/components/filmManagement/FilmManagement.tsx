@@ -35,6 +35,7 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
   const [isDeleteFilmError, setIsDeleteFilmError] = useState(false)
   const [isAddSeance, setIsAddSeance] = useState(false)
   const [isAddSeanceError, setIsAddSeanceError] = useState(false)
+  const [isAddSeanceTimeError, setIsAddSeanceTimeError] = useState(false)
   const [selectedFilm, setSelectedFilm] = useState<FilmType | null>(null)
   const [selectedHall, setSelectedHall] = useState<HallType | null>(null)
   const [selectedSeance, setSelectedSeance] = useState<SeanceType | null>(null)
@@ -118,12 +119,21 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
 
   async function onSubmitAddSeance(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-
-    setIsLoading(true)
     
     const form = new FormData(e.currentTarget)
     form.append('seanceHallid', String(selectedHall?.id))
     form.append('seanceFilmid', String(selectedFilm?.id))
+
+    const seanceTime = form.get('seanceTime')
+    const seanceTimeArr = typeof seanceTime == 'string' ? seanceTime.split(':') : ['00', '00']
+    const seanceTimeMin = (+seanceTimeArr[0] * 60 + +seanceTimeArr[1])
+
+    if ((seanceTimeMin + (selectedFilm?.film_duration ? selectedFilm?.film_duration : 0)) > 1439) {
+      setIsAddSeanceTimeError(true)
+      return
+    } else setIsAddSeanceTimeError(false)
+
+    setIsLoading(true)
 
     try {
       const response = await getResponseFromForm('/seance', 'POST', form)
@@ -150,6 +160,7 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
     setSelectedFilm(null)
     setSelectedHall(null)
     setIsAddSeanceError(false)
+    setIsAddSeanceTimeError(false)
   }  
 
   async function onSubmitDeleteSeance(e: FormEvent<HTMLFormElement>) {
@@ -357,6 +368,7 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
                 </div>
 
                 {isAddSeanceError && <div className={stylesAdminForm.admin_form_error}>Не удалось добавить сеанс.</div>}
+                {isAddSeanceTimeError && <div className={stylesAdminForm.admin_form_error}>Сеанс должен заканчиваться не позднее 23:59.</div>}
               </form>
             </div>
           </div>
