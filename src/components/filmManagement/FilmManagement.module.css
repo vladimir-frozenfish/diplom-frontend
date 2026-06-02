@@ -101,6 +101,14 @@
   justify-content: space-around;
 }
 
+.film_management_hall_delete {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 60%;
+  transform: translate(-120%, -50%);
+}
+
 .film_management_hall_seance {
   position: absolute;
   left: 0;
@@ -131,6 +139,10 @@
   width: 1px;  
   height: 5px;
   background-color: rgba(132, 132, 132, 1);
+}
+
+.film_management_display_none {
+  display: none;
 }
 
 @media (max-width: 391px) {

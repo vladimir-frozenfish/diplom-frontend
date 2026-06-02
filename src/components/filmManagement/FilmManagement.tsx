@@ -40,6 +40,8 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
   const [selectedHall, setSelectedHall] = useState<HallType | null>(null)
   const [selectedSeance, setSelectedSeance] = useState<SeanceType | null>(null)
   const [deleteSeance, setDeleteSeance] = useState<SeanceType | null>(null)
+  const [isShowDeleteSeance, setIsShowDeleteSeance] = useState(false)
+
   const [isDeleteSeanceError, setIsDeleteSeanceError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)  
   const inputFileRef = useRef<HTMLInputElement>(null)
@@ -183,11 +185,13 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
     }
     
     setIsLoading(false)
+    setIsShowDeleteSeance(false)
   }
 
   function onResetDeleteSeance() {
     setDeleteSeance(null)
     setIsDeleteSeanceError(false)
+    setIsShowDeleteSeance(false)
   }
 
 
@@ -223,7 +227,10 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
         className={styles.film_management_hall_seance} 
         style={{backgroundColor: film?.id ? filmsBackground[film.id] : '', left: `${timePercent}%`}}
         draggable
-        onDrag={() => setSelectedSeance(seance)}
+        onDrag={() => {
+          setSelectedSeance(seance)
+          setIsShowDeleteSeance(true)
+        }}
       >
         <span>{film?.film_name}</span>
         <div className={styles.film_management_hall_seance_time}>{seance.seance_time}</div>
@@ -236,6 +243,7 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
     function onDragOver(e: React.DragEvent<HTMLDivElement>) {
       e.preventDefault()
       e.dataTransfer.dropEffect = 'copy'
+
     }
 
     function onDrop(e: React.DragEvent<HTMLDivElement>) {
@@ -251,6 +259,7 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
         <div className={styles.film_management_hall_name}>{hall.hall_name}</div>
         <div className={styles.film_management_hall_time}>
           {seances?.filter(value => value.seance_hallid === hall.id).sort((a, b) => a.seance_time.localeCompare(b.seance_time)).map((seance, index) => <Seance key={index} seance={seance}/>)}
+          <img src={basePath + '/delete.svg'} alt="Удалить" className={(isShowDeleteSeance && selectedSeance?.seance_hallid === hall.id ) ? styles.film_management_hall_delete : styles.film_management_display_none}/>
         </div>
       </div>
     )
