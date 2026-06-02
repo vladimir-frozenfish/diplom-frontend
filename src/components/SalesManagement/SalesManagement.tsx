@@ -14,7 +14,7 @@ interface SalesManagementProps {
 
 export default function SalesManagement({halls, setIsUpdateData}: SalesManagementProps) {
   const [isConfirmSales, setIsConfirmSales] = useState(false)
-  const [currentHall, setCurrentHall] = useState<HallType | null>(null)
+  const [currentHall, setCurrentHall] = useState<HallType | null >(halls ? halls[0] : null)
   const [isLoading, setIsLoading] = useState(false)
   const [isSalesError, setIsSalesError] = useState(false)
 

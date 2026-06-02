@@ -14,9 +14,9 @@ interface PriceСonfigurationProps {
 
 export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonfigurationProps) {
   const [isConfirmPrice, setIsConfirmPrice] = useState(false)
-  const [currentHall, setCurrentHall] = useState<HallType | null>(null)
-  const [priceStandart, setPriceStandart] = useState(0)
-  const [priceVip, setPriceVip] = useState(0)
+  const [currentHall, setCurrentHall] = useState<HallType | null >(halls ? halls[0] : null)
+  const [priceStandart, setPriceStandart] = useState(currentHall ? currentHall.hall_price_standart : 0)
+  const [priceVip, setPriceVip] = useState(currentHall ? currentHall.hall_price_vip : 0)
   const [isLoading, setIsLoading] = useState(false)
   const [isСonfigurationPriceError, setIsСonfigurationPriceError] = useState(false)
 

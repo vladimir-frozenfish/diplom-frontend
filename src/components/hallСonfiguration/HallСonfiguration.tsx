@@ -20,9 +20,9 @@ interface SeatProps {
 
 export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfigurationProps) {
   const [isConfirmHall, setIsConfirmHall] = useState(false)
-  const [currentHall, setCurrentHall] = useState<HallType | null>(null)
-  const [rowsHall, setRowsHall] = useState(0)
-  const [placesHall, setPlacesHall] = useState(0)
+  const [currentHall, setCurrentHall] = useState<HallType | null >(halls ? halls[0] : null)
+  const [rowsHall, setRowsHall] = useState(currentHall ? currentHall.hall_rows : 0)
+  const [placesHall, setPlacesHall] = useState(currentHall ? currentHall.hall_places : 0)
   const [isLoading, setIsLoading] = useState(false)
   const [isСonfigurationHalllError, setIsСonfigurationHallError] = useState(false)
 

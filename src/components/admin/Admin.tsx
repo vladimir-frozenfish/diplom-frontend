@@ -78,7 +78,7 @@ export default function Admin() {
                 <FilmManagement films={allData?.result.films} halls={allData?.result.halls} seances={allData?.result.seances} setIsUpdateData={setIsUpdateData}/>
               </UpDownContainer>
 
-              <UpDownContainer description="КОНФИГУРАЦИЯ ЦЕН" isLast={true}>
+              <UpDownContainer description="ОТКРЫТЬ ПРОДАЖИ" isLast={true}>
                 <SalesManagement halls={allData?.result.halls} setIsUpdateData={setIsUpdateData}/>
               </UpDownContainer>
             </>
