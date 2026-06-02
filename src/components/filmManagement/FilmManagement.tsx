@@ -283,7 +283,7 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
 
                   <div>
                     <div className={stylesAdminForm.admin_form_description}>Продолжительность фильма (мин.)</div>
-                    <input name='filmDuration' className={stylesAdminForm.admin_form_input} type='number' required/>
+                    <input name='filmDuration' className={stylesAdminForm.admin_form_input} type='number' min={1} required/>
                   </div>
 
                   <div>

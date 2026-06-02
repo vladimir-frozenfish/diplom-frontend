@@ -79,7 +79,7 @@ export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonf
             <div className={styles.price_configuration_inputs}>
               <div className={styles.price_configuration_input_filed}>
                 <div className={styles.price_configuration_input_title}>Цена, рублей</div>
-                <input className={styles.price_configuration_input} type='number' value={priceStandart} onChange={(e) => setPriceStandart(+e.currentTarget.value)}></input>
+                <input className={styles.price_configuration_input} type='number' min={1} value={priceStandart} onChange={(e) => setPriceStandart(+e.currentTarget.value)}></input>
               </div>
               <div className={styles.price_configuration_legend}>
                 <div>за</div>
@@ -89,7 +89,7 @@ export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonf
 
               <div className={styles.price_configuration_input_filed}>
                 <div className={styles.price_configuration_input_title}>Цена, рублей</div>
-                <input className={styles.price_configuration_input + ' ' + styles.price_configuration_input_vip} type='number' value={priceVip} onChange={(e) => setPriceVip(+e.currentTarget.value)}></input>
+                <input className={styles.price_configuration_input + ' ' + styles.price_configuration_input_vip} type='number' min={1} value={priceVip} onChange={(e) => setPriceVip(+e.currentTarget.value)}></input>
               </div>
               <div className={styles.price_configuration_legend}>
                 <div>за</div>
