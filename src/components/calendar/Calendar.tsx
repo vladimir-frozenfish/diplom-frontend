@@ -29,14 +29,6 @@ export default function Calendar({selectedDate, onSelectDate}: CalendarProps) {
   const currentDate = new Date()
   const [ dates, setDates ] = useState<Date[]>(getDates(currentDate))
   
-  // const dates: Date[] = []
-
-  // for (let i = 0; i <= 5; i++) {
-  //   const date = new Date(currentDate)
-  //   date.setDate(currentDate.getDate() + i)
-  //   dates.push(date)
-  // }
-
   function Day({date}: DayProps) {
     let stylesDay = styles.calendar_day
     if (areDatesEqual(date, selectedDate)) stylesDay += ' ' + styles.calendar_day_active

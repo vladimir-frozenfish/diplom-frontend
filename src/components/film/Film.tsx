@@ -49,6 +49,8 @@ export default function Film({film, seances, halls, setClientPage, setSelectedSe
     )
   }
 
+  if (!seances.length) return null
+
   return (
     <div className={styles.film}>
       <div className={styles.film_poster_and_description}>
