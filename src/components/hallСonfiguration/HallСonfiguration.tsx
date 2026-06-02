@@ -20,16 +20,18 @@ interface SeatProps {
 
 export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfigurationProps) {
   const [isConfirmHall, setIsConfirmHall] = useState(false)
+  const [indexHall, setIndexHall] = useState(0)
   const [currentHall, setCurrentHall] = useState<HallType | null >(halls ? halls[0] : null)
-  const [rowsHall, setRowsHall] = useState(currentHall ? currentHall.hall_rows : 0)
-  const [placesHall, setPlacesHall] = useState(currentHall ? currentHall.hall_places : 0)
+  const [rowsHall, setRowsHall] = useState(halls ? halls[0].hall_rows : 0)
+  const [placesHall, setPlacesHall] = useState(halls ? halls[0].hall_places : 0)
   const [isLoading, setIsLoading] = useState(false)
   const [isСonfigurationHalllError, setIsСonfigurationHallError] = useState(false)
 
-  function onClickHall(hall: HallType) {
+  function onClickHall(hall: HallType, indexHall: number) {
     setCurrentHall(hall)
     setRowsHall(hall.hall_rows)
     setPlacesHall(hall.hall_places)
+    setIndexHall(indexHall)
   }
 
   function onClickSeat({seat, rowIndex, seatIndex}: SeatProps) {
@@ -49,7 +51,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfig
     setCurrentHall((prevHall) => {
       if (!prevHall) {return null}
       else {
-        const tempHallConfig = prevHall.hall_config
+        const tempHallConfig = [...prevHall.hall_config.map(row => [...row])]
         tempHallConfig[rowIndex][seatIndex] = nextSeat
         return {
           ...prevHall, 
@@ -123,6 +125,12 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfig
     setPlacesHall(currentPlaces)
   }
 
+  function onClickCancel() {
+    setCurrentHall(halls ? halls[indexHall] : null)
+    setRowsHall(halls ? halls[indexHall].hall_rows : 0)
+    setPlacesHall(halls ? halls[indexHall].hall_places : 0)
+  } 
+
   async function onConfirm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setIsLoading(true)
@@ -164,7 +172,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfig
               <div 
                 className={currentHall?.id === hall.id ? styles.hall_configuration_nav_button + ' ' + styles.hall_configuration_nav_button_current : styles.hall_configuration_nav_button} 
                 key={index} 
-                onClick={() => onClickHall(hall)}
+                onClick={() => onClickHall(hall, index)}
               >
                 {hall.hall_name}
               </div>
@@ -233,7 +241,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfig
         </div>
 
         <div className={styles.hall_configuration_buttons}>
-          <Button text='ОТМЕНА' isCancel={true} onClick={() => {if (currentHall) setIsUpdateData((current) => !current)}} />
+          <Button text='ОТМЕНА' isCancel={true} onClick={onClickCancel} />
           <Button text='СОХРАНИТЬ' onClick={() => {if (currentHall) setIsConfirmHall(true)}} />
         </div>
 

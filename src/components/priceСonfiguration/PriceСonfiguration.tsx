@@ -57,6 +57,11 @@ export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonf
     setIsСonfigurationPriceError(false)
   }
 
+  function onClickCancel() {
+    setPriceStandart(currentHall?.hall_price_standart || 0)
+    setPriceVip(currentHall?.hall_price_vip || 0)
+  }   
+
   return (
       <div>
         <div>Выберите зал для конфигурации:</div>
@@ -100,7 +105,7 @@ export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonf
         </div>
 
         <div className={styles.price_configuration_buttons}>
-          <Button text='ОТМЕНА' isCancel={true} onClick={() => {if (currentHall) setIsUpdateData((current) => !current)}} />
+          <Button text='ОТМЕНА' isCancel={true} onClick={onClickCancel} />
           <Button text='СОХРАНИТЬ' onClick={() => {if (currentHall) setIsConfirmPrice(true)}} />
         </div>
 

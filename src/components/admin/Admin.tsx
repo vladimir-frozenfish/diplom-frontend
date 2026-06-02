@@ -9,6 +9,7 @@ import HallСonfiguration from "../hallСonfiguration/HallСonfiguration.tsx"
 import PriceСonfiguration from "../priceСonfiguration/PriceСonfiguration.tsx"
 import FilmManagement from "../filmManagement/FilmManagement.tsx"
 import SalesManagement from "../SalesManagement/SalesManagement.tsx"
+import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
 import styles from './Admin.module.css'
 
 export default function Admin() {
@@ -41,7 +42,7 @@ export default function Admin() {
       </div>
   )}
 
-  if (isLoading) {
+  if (isLoading && !allData) {
     return (
       <div className={styles.admin}>
         <div className={styles.admin_container}><div>Загрузка...</div></div>
@@ -84,6 +85,8 @@ export default function Admin() {
             </>
         }
         </div>
+
+        {isLoading && <LoadingModal />}
       </div>
   )
 }

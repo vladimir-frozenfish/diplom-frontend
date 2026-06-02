@@ -36,6 +36,12 @@ export default function SalesManagement({halls, setIsUpdateData}: SalesManagemen
 
       if (data.success) {
         setIsConfirmSales(false)
+        setCurrentHall((prevHall) => {
+          if (!prevHall) return null
+          else {
+            return {...prevHall, hall_open: prevHall.hall_open ? 0 : 1}
+          }
+        })
         setIsUpdateData((current) => !current)
       } else {
         setIsSalesError(true)
