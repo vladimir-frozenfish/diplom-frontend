@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { areDatesEqual } from '../../utils/utils'
 import styles from './Calendar.module.css'
 
@@ -12,15 +13,29 @@ interface DayProps {
 
 const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
 
-export default function Calendar({selectedDate, onSelectDate}: CalendarProps) {
-  const currentDate = new Date()
+function getDates(firstDate: Date) {
   const dates: Date[] = []
 
   for (let i = 0; i <= 5; i++) {
-    const date = new Date(currentDate)
-    date.setDate(currentDate.getDate() + i)
+    const date = new Date(firstDate)
+    date.setDate(firstDate.getDate() + i)
     dates.push(date)
   }
+
+  return dates
+}
+
+export default function Calendar({selectedDate, onSelectDate}: CalendarProps) {
+  const currentDate = new Date()
+  const [ dates, setDates ] = useState<Date[]>(getDates(currentDate))
+  
+  // const dates: Date[] = []
+
+  // for (let i = 0; i <= 5; i++) {
+  //   const date = new Date(currentDate)
+  //   date.setDate(currentDate.getDate() + i)
+  //   dates.push(date)
+  // }
 
   function Day({date}: DayProps) {
     let stylesDay = styles.calendar_day
@@ -48,7 +63,12 @@ export default function Calendar({selectedDate, onSelectDate}: CalendarProps) {
   return (
     <div className={styles.calendar}>
         {dates.map((date, index) => <Day key={index} date={date} />)}
-        <div className={styles.calendar_day + ' ' + styles.calendar_day_more}>{'>'}</div>
+        <div 
+          className={styles.calendar_day + ' ' + styles.calendar_day_more} 
+          onClick={() => setDates((currentDates) => getDates(currentDates[1]))}
+        >
+          {'>'}
+        </div>
       </div>
   )
 }
