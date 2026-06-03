@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { NavLink } from "react-router"
 import { getResponse } from '../../utils/response'
 import type { AllDataType } from '../../types/types.ts'
+import { basePath } from "../../enum/enum.ts"
 import UpDownContainer from "../../utils/upDownContainer/UpDownContainer.tsx"
 import Auth from "../auth/Auth"
 import HallManagement from "../hallManagement/HallManagement.tsx"
@@ -9,6 +10,7 @@ import HallСonfiguration from "../hallСonfiguration/HallСonfiguration.tsx"
 import PriceСonfiguration from "../priceСonfiguration/PriceСonfiguration.tsx"
 import FilmManagement from "../filmManagement/FilmManagement.tsx"
 import SalesManagement from "../SalesManagement/SalesManagement.tsx"
+import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
 import styles from './Admin.module.css'
 
 export default function Admin() {
@@ -41,7 +43,7 @@ export default function Admin() {
       </div>
   )}
 
-  if (isLoading) {
+  if (isLoading && !allData) {
     return (
       <div className={styles.admin}>
         <div className={styles.admin_container}><div>Загрузка...</div></div>
@@ -53,8 +55,7 @@ export default function Admin() {
         <div className={styles.admin_container}>
           <div className={styles.admin_header}>
             <NavLink to='/admin' reloadDocument className={styles.admin_logo_link}>
-              <div className={styles.admin_logo}>ИДЁМ<span>В</span>КИНО</div>
-              <div className={styles.admin_logo_title}>АДМИНИСТРАТОРРРСКАЯ</div>
+              <img src={basePath + '/admin/logo_admin.svg'} alt="Доготип"/>
             </NavLink>
           </div>
 
@@ -78,12 +79,14 @@ export default function Admin() {
                 <FilmManagement films={allData?.result.films} halls={allData?.result.halls} seances={allData?.result.seances} setIsUpdateData={setIsUpdateData}/>
               </UpDownContainer>
 
-              <UpDownContainer description="КОНФИГУРАЦИЯ ЦЕН" isLast={true}>
+              <UpDownContainer description="ОТКРЫТЬ ПРОДАЖИ" isLast={true}>
                 <SalesManagement halls={allData?.result.halls} setIsUpdateData={setIsUpdateData}/>
               </UpDownContainer>
             </>
         }
         </div>
+
+        {isLoading && <LoadingModal />}
       </div>
   )
 }

@@ -1,6 +1,8 @@
 .hall_configuration_nav {
- display: flex; 
+ display: flex;
+ flex-wrap: wrap; 
  column-gap: 4px;
+ row-gap: 8px;
  margin-top: 12px;
 }
 
@@ -62,7 +64,7 @@
 .hall_configuration_rows_input {
   padding: 8px;
   font-weight: 400;
-  color: rgba(117, 117, 117, 1);
+  width: 100px;
   border: 1px solid rgba(183, 183, 183, 1)
 }
 

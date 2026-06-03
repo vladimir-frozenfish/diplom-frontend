@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { areDatesEqual } from '../../utils/utils'
+import { basePath } from '../../enum/enum'
 import styles from './Calendar.module.css'
 
 interface CalendarProps {
@@ -12,16 +14,22 @@ interface DayProps {
 
 const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
 
-export default function Calendar({selectedDate, onSelectDate}: CalendarProps) {
-  const currentDate = new Date()
+function getDates(firstDate: Date) {
   const dates: Date[] = []
 
   for (let i = 0; i <= 5; i++) {
-    const date = new Date(currentDate)
-    date.setDate(currentDate.getDate() + i)
+    const date = new Date(firstDate)
+    date.setDate(firstDate.getDate() + i)
     dates.push(date)
   }
 
+  return dates
+}
+
+export default function Calendar({selectedDate, onSelectDate}: CalendarProps) {
+  const currentDate = new Date()
+  const [ dates, setDates ] = useState<Date[]>(getDates(currentDate))
+  
   function Day({date}: DayProps) {
     let stylesDay = styles.calendar_day
     if (areDatesEqual(date, selectedDate)) stylesDay += ' ' + styles.calendar_day_active
@@ -45,10 +53,33 @@ export default function Calendar({selectedDate, onSelectDate}: CalendarProps) {
     )
   }
 
+  function onClickPreviousDate() {
+    if (areDatesEqual(dates[0], new Date())) return
+
+    setDates((currentDates) => {
+      const date = new Date(currentDates[0])
+      date.setDate(currentDates[0].getDate() - 1)
+      return getDates(date)
+    })
+  }
+
   return (
     <div className={styles.calendar}>
+        <div 
+          className={styles.calendar_day + ' ' + styles.calendar_day_more + ' ' + styles.calendar_scale_x} 
+          onClick={onClickPreviousDate}
+        >
+          <img src={basePath + '/chevron_right.svg'} alt="Next" style={{opacity: areDatesEqual(dates[0], new Date()) ? '0.2' : '1'}}/>
+        </div>
+
         {dates.map((date, index) => <Day key={index} date={date} />)}
-        <div className={styles.calendar_day + ' ' + styles.calendar_day_more}>{'>'}</div>
+        
+        <div 
+          className={styles.calendar_day + ' ' + styles.calendar_day_more} 
+          onClick={() => setDates((currentDates) => getDates(currentDates[1]))}
+        >
+          <img src={basePath + '/chevron_right.svg'} alt="Next" />
+        </div>
       </div>
   )
 }

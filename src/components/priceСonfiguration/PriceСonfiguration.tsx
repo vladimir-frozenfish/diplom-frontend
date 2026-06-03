@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent, Dispatch, SetStateAction } from 'react'
 import type { HallType } from '../../types/types.ts'
 import { getResponseFromForm } from '../../utils/response.ts'
+import { basePath } from '../../enum/enum.ts'
 import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
 import Button from '../../utils/button/Button.tsx'
 import styles from './PriceСonfiguration.module.css'
@@ -14,9 +15,9 @@ interface PriceСonfigurationProps {
 
 export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonfigurationProps) {
   const [isConfirmPrice, setIsConfirmPrice] = useState(false)
-  const [currentHall, setCurrentHall] = useState<HallType | null>(null)
-  const [priceStandart, setPriceStandart] = useState(0)
-  const [priceVip, setPriceVip] = useState(0)
+  const [currentHall, setCurrentHall] = useState<HallType | null >(halls ? halls[0] : null)
+  const [priceStandart, setPriceStandart] = useState(currentHall ? currentHall.hall_price_standart : 0)
+  const [priceVip, setPriceVip] = useState(currentHall ? currentHall.hall_price_vip : 0)
   const [isLoading, setIsLoading] = useState(false)
   const [isСonfigurationPriceError, setIsСonfigurationPriceError] = useState(false)
 
@@ -57,6 +58,11 @@ export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonf
     setIsСonfigurationPriceError(false)
   }
 
+  function onClickCancel() {
+    setPriceStandart(currentHall?.hall_price_standart || 0)
+    setPriceVip(currentHall?.hall_price_vip || 0)
+  }   
+
   return (
       <div>
         <div>Выберите зал для конфигурации:</div>
@@ -79,7 +85,7 @@ export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonf
             <div className={styles.price_configuration_inputs}>
               <div className={styles.price_configuration_input_filed}>
                 <div className={styles.price_configuration_input_title}>Цена, рублей</div>
-                <input className={styles.price_configuration_input} type='number' value={priceStandart} onChange={(e) => setPriceStandart(+e.currentTarget.value)}></input>
+                <input className={styles.price_configuration_input} type='number' min={1} value={priceStandart} onChange={(e) => setPriceStandart(+e.currentTarget.value)}></input>
               </div>
               <div className={styles.price_configuration_legend}>
                 <div>за</div>
@@ -89,7 +95,7 @@ export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonf
 
               <div className={styles.price_configuration_input_filed}>
                 <div className={styles.price_configuration_input_title}>Цена, рублей</div>
-                <input className={styles.price_configuration_input + ' ' + styles.price_configuration_input_vip} type='number' value={priceVip} onChange={(e) => setPriceVip(+e.currentTarget.value)}></input>
+                <input className={styles.price_configuration_input + ' ' + styles.price_configuration_input_vip} type='number' min={1} value={priceVip} onChange={(e) => setPriceVip(+e.currentTarget.value)}></input>
               </div>
               <div className={styles.price_configuration_legend}>
                 <div>за</div>
@@ -100,14 +106,17 @@ export default function PriceСonfiguration({halls, setIsUpdateData}: PriceСonf
         </div>
 
         <div className={styles.price_configuration_buttons}>
-          <Button text='ОТМЕНА' isCancel={true} onClick={() => {if (currentHall) setIsUpdateData((current) => !current)}} />
+          <Button text='ОТМЕНА' isCancel={true} onClick={onClickCancel} />
           <Button text='СОХРАНИТЬ' onClick={() => {if (currentHall) setIsConfirmPrice(true)}} />
         </div>
 
         {isConfirmPrice && 
           <div className={stylesAdminForm.admin_form_modal}>
             <div className={stylesAdminForm.admin_form_container}>
-              <div className={stylesAdminForm.admin_form_header}>КОНФИГУРАЦИЯ ЦЕН</div>
+              <div className={stylesAdminForm.admin_form_header}>
+                <span>КОНФИГУРАЦИЯ ЦЕН</span>
+                <img src={basePath + '/admin/cancel.svg'} alt="Отмена" className={stylesAdminForm.admin_form_header_cancel} onClick={onResetConfirm}/>
+              </div>
               <form className={stylesAdminForm.admin_form} onSubmit={onConfirm} onReset={onResetConfirm}>
                 <div className={stylesAdminForm.admin_form_caption}>Сохранить цены зала - <span>{currentHall?.hall_name}?</span></div>
 

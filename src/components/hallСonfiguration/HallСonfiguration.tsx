@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent, Dispatch, SetStateAction } from 'react'
 import type { HallType, SeatType } from '../../types/types.ts'
 import { getResponseFromForm } from '../../utils/response.ts'
+import { basePath } from '../../enum/enum.ts'
 import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
 import Button from '../../utils/button/Button.tsx'
 import styles from './HallСonfiguration.module.css'
@@ -20,16 +21,18 @@ interface SeatProps {
 
 export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfigurationProps) {
   const [isConfirmHall, setIsConfirmHall] = useState(false)
-  const [currentHall, setCurrentHall] = useState<HallType | null>(null)
-  const [rowsHall, setRowsHall] = useState(0)
-  const [placesHall, setPlacesHall] = useState(0)
+  const [indexHall, setIndexHall] = useState(0)
+  const [currentHall, setCurrentHall] = useState<HallType | null >(halls ? halls[0] : null)
+  const [rowsHall, setRowsHall] = useState(halls ? halls[0].hall_rows : 0)
+  const [placesHall, setPlacesHall] = useState(halls ? halls[0].hall_places : 0)
   const [isLoading, setIsLoading] = useState(false)
   const [isСonfigurationHalllError, setIsСonfigurationHallError] = useState(false)
 
-  function onClickHall(hall: HallType) {
+  function onClickHall(hall: HallType, indexHall: number) {
     setCurrentHall(hall)
     setRowsHall(hall.hall_rows)
     setPlacesHall(hall.hall_places)
+    setIndexHall(indexHall)
   }
 
   function onClickSeat({seat, rowIndex, seatIndex}: SeatProps) {
@@ -49,7 +52,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfig
     setCurrentHall((prevHall) => {
       if (!prevHall) {return null}
       else {
-        const tempHallConfig = prevHall.hall_config
+        const tempHallConfig = [...prevHall.hall_config.map(row => [...row])]
         tempHallConfig[rowIndex][seatIndex] = nextSeat
         return {
           ...prevHall, 
@@ -123,6 +126,12 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfig
     setPlacesHall(currentPlaces)
   }
 
+  function onClickCancel() {
+    setCurrentHall(halls ? halls[indexHall] : null)
+    setRowsHall(halls ? halls[indexHall].hall_rows : 0)
+    setPlacesHall(halls ? halls[indexHall].hall_places : 0)
+  } 
+
   async function onConfirm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setIsLoading(true)
@@ -164,7 +173,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfig
               <div 
                 className={currentHall?.id === hall.id ? styles.hall_configuration_nav_button + ' ' + styles.hall_configuration_nav_button_current : styles.hall_configuration_nav_button} 
                 key={index} 
-                onClick={() => onClickHall(hall)}
+                onClick={() => onClickHall(hall, index)}
               >
                 {hall.hall_name}
               </div>
@@ -177,7 +186,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfig
           <div className={styles.hall_configuration_rows_inputs}>
             <div className={styles.hall_configuration_rows_input_filed}>
               <div className={styles.hall_configuration_rows_input_title}>Рядов, шт</div>
-              <input className={styles.hall_configuration_rows_input} type='number' min={1} value={rowsHall} onChange={onChangeRows} onKeyDown={(e) => e.preventDefault()}></input>
+              <input className={styles.hall_configuration_rows_input} type='number' min={1} value={rowsHall} onChange={onChangeRows} ></input>
             </div>
             <div>
               <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -186,7 +195,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfig
             </div>
             <div className={styles.hall_configuration_rows_input_filed}>
               <div className={styles.hall_configuration_rows_input_title}>Мест, шт</div>
-              <input className={styles.hall_configuration_rows_input} type='number' min={1} value={placesHall} onChange={onChangePlaces} onKeyDown={(e) => e.preventDefault()}></input>
+              <input className={styles.hall_configuration_rows_input} type='number' min={1} value={placesHall} onChange={onChangePlaces} ></input>
             </div>            
           </div>
         </div>
@@ -233,14 +242,17 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfig
         </div>
 
         <div className={styles.hall_configuration_buttons}>
-          <Button text='ОТМЕНА' isCancel={true} onClick={() => {if (currentHall) setIsUpdateData((current) => !current)}} />
+          <Button text='ОТМЕНА' isCancel={true} onClick={onClickCancel} />
           <Button text='СОХРАНИТЬ' onClick={() => {if (currentHall) setIsConfirmHall(true)}} />
         </div>
 
         {isConfirmHall && 
           <div className={stylesAdminForm.admin_form_modal}>
             <div className={stylesAdminForm.admin_form_container}>
-              <div className={stylesAdminForm.admin_form_header}>КОНФИГУРАЦИЯ ЗАЛА</div>
+              <div className={stylesAdminForm.admin_form_header}>
+                <span>КОНФИГУРАЦИЯ ЗАЛА</span>
+                <img src={basePath + '/admin/cancel.svg'} alt="Отмена" className={stylesAdminForm.admin_form_header_cancel} onClick={onResetConfirm}/>
+              </div>
               <form className={stylesAdminForm.admin_form} onSubmit={onConfirm} onReset={onResetConfirm}>
                 <div className={stylesAdminForm.admin_form_caption}>Сохранить конфигурацию зала - <span>{currentHall?.hall_name}?</span></div>
 

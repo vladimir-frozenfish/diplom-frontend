@@ -45,7 +45,7 @@ export default function Booking({selectedDate, selectedSeance, selectedFilm, sel
             <div>В зале: <span>{hall}</span></div>
             <div>Дата: <span>{date}</span></div>
             <div>Начало сеанса: <span>{time}</span></div>
-            <div>Стоимость: <span>{price}</span></div>
+            <div>Стоимость: <span>{price}</span> рублей</div>
           </div>
           
           {!isShowQrCode 

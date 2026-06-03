@@ -34,10 +34,11 @@
 }
 
 .calendar_day_more {
-  font-family: 'Consolas';
   justify-content: center;
-  font-size: 24px;
-  font-weight: 700;
+}
+
+.calendar_scale_x {
+  transform: scaleX(-1);
 }
 
 @media (max-width: 391px) {

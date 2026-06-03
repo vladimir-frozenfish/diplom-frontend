@@ -20,22 +20,35 @@
   flex: 1;
 }
 
+.admin_form_container_small {
+  width: 480px;
+}
+
 .admin_form_container_wide {
   width: 960px;
 }
 
 .admin_form_header {
+  position: relative;
   color: white;
   font-size: 22px;
   font-weight: 700;
   padding: 16px 0px;
   background: rgba(99, 83, 108, 1);
-  text-align: center;
+  padding-left: 42px;
+}
+
+.admin_form_header_cancel {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translate(-100%, -50%);
+  cursor: pointer;
 }
 
 .admin_form {
   background: rgba(234, 233, 235, 0.95);
-  padding: 35px 100px;
+  padding: 35px 104px;
 }
 
 .admin_form_caption {
@@ -61,6 +74,14 @@
   width: 100%;
   padding: 9px;
   box-sizing: border-box;
+}
+
+.admin_form_select {
+  appearance: none;
+  background-image: url('/admin/chevron_down.svg');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;
 }
 
 .admin_form_textarea {
@@ -113,6 +134,14 @@
   .admin_form {
     padding: 35px 8px;
   }
+
+  .admin_form_small {
+    padding: 35px 104px;
+  }
+
+  .admin_form_container_small {
+    width: 480px;
+  }    
 }
 
 @media (max-width: 391px) {
@@ -126,4 +155,12 @@
   .admin_form_button {
     width: 200px;
   }
+
+  .admin_form_small {
+    padding: 35px 59px;
+  }
+
+  .admin_form_container_small {
+    width: 100%;
+  }      
 }
