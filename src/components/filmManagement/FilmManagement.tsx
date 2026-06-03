@@ -295,7 +295,10 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
         {isAddFilm && 
           <div className={stylesAdminForm.admin_form_modal}>
             <div className={stylesAdminForm.admin_form_container + ' ' + stylesAdminForm.admin_form_container_wide}>
-              <div className={stylesAdminForm.admin_form_header}>ДОБАВЛЕНИЕ ФИЛЬМА</div>
+              <div className={stylesAdminForm.admin_form_header}>
+                <span>ДОБАВЛЕНИЕ ФИЛЬМА</span>
+                <img src={basePath + '/admin/cancel.svg'} alt="Отмена" className={stylesAdminForm.admin_form_header_cancel} onClick={onResetAddFilm}/>
+              </div>
               <form id='addFilmForm' className={stylesAdminForm.admin_form} onSubmit={onSubmitAddFilm} onReset={onResetAddFilm}>
 
                 <div  className={stylesAdminForm.admin_form_fields}>
@@ -339,7 +342,10 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
         {deleteFilm && 
           <div className={stylesAdminForm.admin_form_modal}>
             <div className={stylesAdminForm.admin_form_container}>
-              <div className={stylesAdminForm.admin_form_header}>УДАЛЕНИЕ ФИЛЬМА</div>
+              <div className={stylesAdminForm.admin_form_header}>
+                <span>УДАЛЕНИЕ ФИЛЬМА</span>
+                <img src={basePath + '/admin/cancel.svg'} alt="Отмена" className={stylesAdminForm.admin_form_header_cancel} onClick={onResetDelete}/>
+              </div>
               <form className={stylesAdminForm.admin_form} onSubmit={onSubmitDelete} onReset={onResetDelete}>
                 <div className={stylesAdminForm.admin_form_caption}>Вы хотите удалить фильм - <span>{deleteFilm.film_name}?</span></div>
 
@@ -357,7 +363,10 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
         {isAddSeance && 
           <div className={stylesAdminForm.admin_form_modal}>
             <div className={stylesAdminForm.admin_form_container + ' ' + stylesAdminForm.admin_form_container_wide}>
-              <div className={stylesAdminForm.admin_form_header}>ДОБАВЛЕНИЕ СЕАНСА</div>
+              <div className={stylesAdminForm.admin_form_header}>
+                <span>ДОБАВЛЕНИЕ СЕАНСА</span>
+                <img src={basePath + '/admin/cancel.svg'} alt="Отмена" className={stylesAdminForm.admin_form_header_cancel} onClick={onResetAddSeance}/>
+              </div>
               <form className={stylesAdminForm.admin_form} onSubmit={onSubmitAddSeance} onReset={onResetAddSeance}>
 
                 <div  className={stylesAdminForm.admin_form_fields}>
@@ -386,7 +395,10 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
         {deleteSeance && 
           <div className={stylesAdminForm.admin_form_modal}>
             <div className={stylesAdminForm.admin_form_container}>
-              <div className={stylesAdminForm.admin_form_header}>УДАЛЕНИЕ СЕАНСА</div>
+              <div className={stylesAdminForm.admin_form_header}>
+                <span>УДАЛЕНИЕ СЕАНСА</span>
+                <img src={basePath + '/admin/cancel.svg'} alt="Отмена" className={stylesAdminForm.admin_form_header_cancel} onClick={onResetDeleteSeance}/>
+              </div>
               <form className={stylesAdminForm.admin_form} onSubmit={onSubmitDeleteSeance} onReset={onResetDeleteSeance}>
                 <div className={stylesAdminForm.admin_form_caption}>Вы хотите удалить сеанс?</div>
 

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent, Dispatch, SetStateAction } from 'react'
 import type { HallType } from '../../types/types.ts'
 import { getResponseFromForm } from '../../utils/response.ts'
+import { basePath } from '../../enum/enum.ts'
 import LoadingModal from '../../utils/loadingModal/LoadingModal.tsx'
 import Button from '../../utils/button/Button.tsx'
 import styles from './SalesManagement.module.css'
@@ -85,7 +86,10 @@ export default function SalesManagement({halls, setIsUpdateData}: SalesManagemen
         {isConfirmSales && 
           <div className={stylesAdminForm.admin_form_modal}>
             <div className={stylesAdminForm.admin_form_container}>
-              <div className={stylesAdminForm.admin_form_header}>{!currentHall?.hall_open ? 'ОТКРЫТЬ ПРОДАЖУ БИЛЕТОВ' : 'ЗАКРЫТЬ ПРОДАЖУ БИЛЕТОВ'}</div>
+              <div className={stylesAdminForm.admin_form_header}>
+                <span>{!currentHall?.hall_open ? 'ОТКРЫТЬ ПРОДАЖУ БИЛЕТОВ' : 'ЗАКРЫТЬ ПРОДАЖУ БИЛЕТОВ'}</span>
+                <img src={basePath + '/admin/cancel.svg'} alt="Отмена" className={stylesAdminForm.admin_form_header_cancel} onClick={onResetConfirm}/>
+              </div>
               <form className={stylesAdminForm.admin_form} onSubmit={onConfirm} onReset={onResetConfirm}>
                 <div className={stylesAdminForm.admin_form_caption}>{!currentHall?.hall_open ? 'Открыть продажу билетов' : 'Закрыть продажу билетов'} в зале <span>{currentHall?.hall_name}</span></div>
 

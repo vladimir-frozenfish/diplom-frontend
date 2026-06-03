@@ -25,12 +25,21 @@
 }
 
 .admin_form_header {
+  position: relative;
   color: white;
   font-size: 22px;
   font-weight: 700;
   padding: 16px 0px;
   background: rgba(99, 83, 108, 1);
-  text-align: center;
+  padding-left: 42px;
+}
+
+.admin_form_header_cancel {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translate(-100%, -50%);
+  cursor: pointer;
 }
 
 .admin_form {

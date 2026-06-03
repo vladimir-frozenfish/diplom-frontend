@@ -99,7 +99,10 @@ export default function HallManagement({halls, setIsUpdateData}: HallManagementP
         {isAddHall && 
           <div className={stylesAdminForm.admin_form_modal}>
             <div className={stylesAdminForm.admin_form_container}>
-              <div className={stylesAdminForm.admin_form_header}>ДОБАВЛЕНИЕ ЗАЛА</div>
+              <div className={stylesAdminForm.admin_form_header}>
+                <span>ДОБАВЛЕНИЕ ЗАЛА</span>
+                <img src={basePath + '/admin/cancel.svg'} alt="Отмена" className={stylesAdminForm.admin_form_header_cancel} onClick={onReset}/>
+              </div>
               <form className={stylesAdminForm.admin_form} onSubmit={onSubmit} onReset={onReset}>
                 <div  className={stylesAdminForm.admin_form_fields}>
                   <div>
@@ -122,7 +125,10 @@ export default function HallManagement({halls, setIsUpdateData}: HallManagementP
         {deleteHall && 
           <div className={stylesAdminForm.admin_form_modal}>
             <div className={stylesAdminForm.admin_form_container}>
-              <div className={stylesAdminForm.admin_form_header}>УДАЛЕНИЕ ЗАЛА</div>
+              <div className={stylesAdminForm.admin_form_header}>
+                <span>УДАЛЕНИЕ ЗАЛА</span>
+                <img src={basePath + '/admin/cancel.svg'} alt="Отмена" className={stylesAdminForm.admin_form_header_cancel} onClick={onResetDelete}/>
+              </div>
               <form className={stylesAdminForm.admin_form} onSubmit={onSubmitDelete} onReset={onResetDelete}>
                 <div className={stylesAdminForm.admin_form_caption}>Вы хотите удалить зал - <span>{deleteHall.hall_name}?</span></div>
 

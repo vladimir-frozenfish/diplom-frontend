@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { getResponseFromForm } from '../../utils/response'
+import styles from './Auth.module.css'
 import stylesAdminForm from  '../../css/FormAdmin.module.css'
 
 interface AuthProps {
@@ -33,7 +34,7 @@ export default function Auth({setIsAuth}: AuthProps) {
       <div className={stylesAdminForm.admin_form_inner}>
         
         <div className={stylesAdminForm.admin_form_container}>
-          <div className={stylesAdminForm.admin_form_header}>АВТОРИЗАЦИЯ</div>
+          <div className={styles.auth_form_header}>АВТОРИЗАЦИЯ</div>
           
           <form className={stylesAdminForm.admin_form} onSubmit={onSubmit}>
             <div  className={stylesAdminForm.admin_form_fields}>
