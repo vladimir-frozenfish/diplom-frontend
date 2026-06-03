@@ -158,6 +158,12 @@
   display: none;
 }
 
+@media (max-width: 769px) {
+  .film_management_halls {
+    margin-right: 45px;
+  }
+}
+
 @media (max-width: 391px) {
   .film_management_halls {
     margin: 36px 0 0;
