@@ -98,7 +98,7 @@ export default function HallManagement({halls, setIsUpdateData}: HallManagementP
         
         {isAddHall && 
           <div className={stylesAdminForm.admin_form_modal}>
-            <div className={stylesAdminForm.admin_form_container}>
+            <div className={stylesAdminForm.admin_form_container + ' ' + stylesAdminForm.admin_form_container_wide}>
               <div className={stylesAdminForm.admin_form_header}>
                 <span>ДОБАВЛЕНИЕ ЗАЛА</span>
                 <img src={basePath + '/admin/cancel.svg'} alt="Отмена" className={stylesAdminForm.admin_form_header_cancel} onClick={onReset}/>
