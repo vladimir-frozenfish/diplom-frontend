@@ -232,7 +232,7 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
           setIsShowDeleteSeance(true)
         }}
       >
-        <span>{film?.film_name}</span>
+        <div className={styles.film_management_hall_seance_name}>{film?.film_name}</div>
         <div className={styles.film_management_hall_seance_time}>{seance.seance_time}</div>
         <div className={styles.film_management_hall_seance_time_line}></div>
       </div>  
