@@ -53,9 +53,27 @@ export default function Calendar({selectedDate, onSelectDate}: CalendarProps) {
     )
   }
 
+  function onClickPreviousDate() {
+    if (areDatesEqual(dates[0], new Date())) return
+
+    setDates((currentDates) => {
+      const date = new Date(currentDates[0])
+      date.setDate(currentDates[0].getDate() - 1)
+      return getDates(date)
+    })
+  }
+
   return (
     <div className={styles.calendar}>
+        <div 
+          className={styles.calendar_day + ' ' + styles.calendar_day_more + ' ' + styles.calendar_scale_x} 
+          onClick={onClickPreviousDate}
+        >
+          <img src={basePath + '/chevron_right.svg'} alt="Next" style={{opacity: areDatesEqual(dates[0], new Date()) ? '0.2' : '1'}}/>
+        </div>
+
         {dates.map((date, index) => <Day key={index} date={date} />)}
+        
         <div 
           className={styles.calendar_day + ' ' + styles.calendar_day_more} 
           onClick={() => setDates((currentDates) => getDates(currentDates[1]))}

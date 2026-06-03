@@ -37,6 +37,10 @@
   justify-content: center;
 }
 
+.calendar_scale_x {
+  transform: scaleX(-1);
+}
+
 @media (max-width: 391px) {
   .calendar_day {
     padding: 0 10px;
