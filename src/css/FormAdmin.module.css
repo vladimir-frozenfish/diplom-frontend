@@ -20,6 +20,10 @@
   flex: 1;
 }
 
+.admin_form_container_small {
+  width: 480px;
+}
+
 .admin_form_container_wide {
   width: 960px;
 }
@@ -44,7 +48,7 @@
 
 .admin_form {
   background: rgba(234, 233, 235, 0.95);
-  padding: 35px 100px;
+  padding: 35px 104px;
 }
 
 .admin_form_caption {
@@ -130,6 +134,14 @@
   .admin_form {
     padding: 35px 8px;
   }
+
+  .admin_form_small {
+    padding: 35px 104px;
+  }
+
+  .admin_form_container_small {
+    width: 480px;
+  }    
 }
 
 @media (max-width: 391px) {
@@ -143,4 +155,12 @@
   .admin_form_button {
     width: 200px;
   }
+
+  .admin_form_small {
+    padding: 35px 8px;
+  }
+
+  .admin_form_container_small {
+    width: 100%;
+  }      
 }
