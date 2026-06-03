@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { areDatesEqual } from '../../utils/utils'
+import { basePath } from '../../enum/enum'
 import styles from './Calendar.module.css'
 
 interface CalendarProps {
@@ -59,7 +60,7 @@ export default function Calendar({selectedDate, onSelectDate}: CalendarProps) {
           className={styles.calendar_day + ' ' + styles.calendar_day_more} 
           onClick={() => setDates((currentDates) => getDates(currentDates[1]))}
         >
-          {'>'}
+          <img src={basePath + '/chevron_right.svg'} alt="Next" />
         </div>
       </div>
   )
