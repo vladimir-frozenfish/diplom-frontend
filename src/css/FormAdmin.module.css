@@ -72,6 +72,14 @@
   box-sizing: border-box;
 }
 
+.admin_form_select {
+  appearance: none;
+  background-image: url('/admin/chevron_down.svg');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;
+}
+
 .admin_form_textarea {
   resize: none;
 }

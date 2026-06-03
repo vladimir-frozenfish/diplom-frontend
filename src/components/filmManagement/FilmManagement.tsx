@@ -123,8 +123,6 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
     e.preventDefault()
     
     const form = new FormData(e.currentTarget)
-    form.append('seanceHallid', String(selectedHall?.id))
-    form.append('seanceFilmid', String(selectedFilm?.id))
 
     const seanceTime = form.get('seanceTime')
     const seanceTimeArr = typeof seanceTime == 'string' ? seanceTime.split(':') : ['00', '00']
@@ -370,13 +368,24 @@ export default function FilmManagement({films, halls, seances, setIsUpdateData}:
               <form className={stylesAdminForm.admin_form} onSubmit={onSubmitAddSeance} onReset={onResetAddSeance}>
 
                 <div  className={stylesAdminForm.admin_form_fields}>
-                  <div>Фильм: {selectedFilm?.film_name}</div>
-                  <div>Кинозал: {selectedHall?.hall_name}</div>
+                  <div>
+                    <div className={stylesAdminForm.admin_form_description}>Название зала</div>
+                    <select className={stylesAdminForm.admin_form_input + ' ' + stylesAdminForm.admin_form_select} name='seanceHallid' defaultValue={selectedHall?.id}>
+                      {halls?.map((hall, index) => <option key={index} value={hall.id}>{hall.hall_name}</option>)}
+                    </select>
+                  </div>
+                    
+                  <div>
+                    <div className={stylesAdminForm.admin_form_description}>Название фильма</div>
+                    <select className={stylesAdminForm.admin_form_input + ' ' + stylesAdminForm.admin_form_select} name='seanceFilmid' defaultValue={selectedFilm?.id}>
+                      {films?.map((film, index) => <option key={index} value={film.id}>{film.film_name}</option>)}
+                    </select>                    
+                  </div>
 
                   <div>
                     <div className={stylesAdminForm.admin_form_description}>Время начала</div>
                     <input type='time' placeholder='15:00' name='seanceTime' className={stylesAdminForm.admin_form_input} required/>
-                  </div>                                    
+                  </div>
 
                 </div>                
 
