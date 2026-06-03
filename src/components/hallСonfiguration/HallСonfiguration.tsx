@@ -185,7 +185,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfig
           <div className={styles.hall_configuration_rows_inputs}>
             <div className={styles.hall_configuration_rows_input_filed}>
               <div className={styles.hall_configuration_rows_input_title}>Рядов, шт</div>
-              <input className={styles.hall_configuration_rows_input} type='number' min={1} value={rowsHall} onChange={onChangeRows} onKeyDown={(e) => e.preventDefault()}></input>
+              <input className={styles.hall_configuration_rows_input} type='number' min={1} value={rowsHall} onChange={onChangeRows} ></input>
             </div>
             <div>
               <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -194,7 +194,7 @@ export default function HallСonfiguration({halls, setIsUpdateData}: HallСonfig
             </div>
             <div className={styles.hall_configuration_rows_input_filed}>
               <div className={styles.hall_configuration_rows_input_title}>Мест, шт</div>
-              <input className={styles.hall_configuration_rows_input} type='number' min={1} value={placesHall} onChange={onChangePlaces} onKeyDown={(e) => e.preventDefault()}></input>
+              <input className={styles.hall_configuration_rows_input} type='number' min={1} value={placesHall} onChange={onChangePlaces} ></input>
             </div>            
           </div>
         </div>
