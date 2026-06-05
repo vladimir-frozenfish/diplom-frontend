@@ -47,4 +47,8 @@
   .admin_container {
     width: 100%;
   }
+
+  .admin_header_768 {
+    padding: 14px 0 14px 14px;
+  }
 }

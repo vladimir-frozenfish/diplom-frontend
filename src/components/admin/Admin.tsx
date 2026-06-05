@@ -53,7 +53,7 @@ export default function Admin() {
   return (
       <div className={styles.admin}>
         <div className={styles.admin_container}>
-          <div className={styles.admin_header}>
+          <div className={isAuth ? styles.admin_header : styles.admin_header + ' ' + styles.admin_header_768}>
             <NavLink to='/admin' reloadDocument className={styles.admin_logo_link}>
               <img src={basePath + '/admin/logo_admin.svg'} alt="Доготип"/>
             </NavLink>
